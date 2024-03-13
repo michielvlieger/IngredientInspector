@@ -54,3 +54,6 @@ Here are some shortcuts for managing Node versions using NVM:
 For troubleshooting common issues, including how to kill a port that's in use, refer to:
 
 - [Port Already In Use](https://reactnative.dev/docs/troubleshooting#port-already-in-use)
+
+- Reopen the iOS Simulator without Stopping the Expo Project:
+    If you're using the command line, you can simply press i in the terminal where your Expo project is running. This command tells Expo to open the project in the iOS simulator again.
