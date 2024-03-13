@@ -31,22 +31,32 @@ Here are some shortcuts for managing Node versions using NVM:
 
 - View all Node versions:
 
-  ```bash
+  ```zsh
     nvm list
 
 - Use a specific Node version:
+
+  ```zsh
     nvm use 20
 
 - Use the latest Node version:
+
+  ```zsh
     nvm use node
 
 - Verify the current Node version in use:
+
+  ```zsh
     node -v
 
 - Set the default alias to the latest version:
+
+  ```zsh
     nvm alias default node
 
 - Upgrade to the latest version of Node for NVM:
+
+  ```zsh
     nvm install node
 
 ## Troubleshooting
