@@ -55,4 +55,4 @@ DerivedData/
 *.env.local
 
 # Other files and directories
-frontend/ios
+ios/
