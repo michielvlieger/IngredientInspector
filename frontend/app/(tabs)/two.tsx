@@ -1,23 +1,22 @@
-import { Button, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Camera, CameraType } from 'expo-camera';
-import { useEffect, useRef, useState } from 'react';
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Camera, CameraCapturedPicture, CameraType, PermissionResponse } from 'expo-camera';
+import { useEffect, useState } from 'react';
 
 export default function TabTwoScreen() {
-  let cameraRef: Camera | null;
-  const [hasCameraPermission, setHasCameraPermission] = useState(false);
-  const [photo, setPhoto] = useState<any>();
+  const [hasCameraPermission, setHasCameraPermission] = useState<PermissionResponse>();
+  const [photo, setPhoto] = useState<CameraCapturedPicture>();
 
   useEffect(() => {
     (async () => {
       const cameraPermission = await Camera.requestMicrophonePermissionsAsync();
-      setHasCameraPermission(cameraPermission.status === "granted");
+      setHasCameraPermission(cameraPermission);
     })();
   }, []);
 
-  if (hasCameraPermission === undefined) {
+  if (!hasCameraPermission) {
     return <Text>Requesting permission.</Text>
   } else if (!hasCameraPermission) {
-    return <Text>Please for camera not granted. Please enable camera permission in settings.</Text>
+    return <Text>Please enable camera permission in settings.</Text>
   }
 
   if (photo) {
@@ -38,6 +37,7 @@ export default function TabTwoScreen() {
     </View>
   }
 
+  let cameraRef: Camera | null;
   let takePicture = async () => {
     if (!cameraRef) return;
     let options = {
@@ -62,15 +62,13 @@ export default function TabTwoScreen() {
           width: '100%',
           padding: 20,
           justifyContent: 'space-between'
-        }}
-      >
+        }}>
         <View
           style={{
             alignSelf: 'center',
             flex: 1,
             alignItems: 'center'
-          }}
-        >
+          }}>
           <TouchableOpacity
             onPress={takePicture}
             style={{
@@ -79,8 +77,7 @@ export default function TabTwoScreen() {
               bottom: 0,
               borderRadius: 50,
               backgroundColor: '#fff'
-            }}
-          />
+            }} />
         </View>
       </View>
     </Camera>
