@@ -1,5 +1,7 @@
-import preferenceSchema from "./preference.schema";
+import ingredientsSchema from "./ingredients.schema";
+import preferencesSchema from "./preferences.schema";
 
 export {
-    preferenceSchema,
+    preferencesSchema,
+    ingredientsSchema,
 }
