@@ -19,4 +19,4 @@ export default runAllSeeds;
  * "seeds": "ts-node --project ./tsconfig.json -e \"require('./app/database/seeds/index.seeds').runAllSeeds()\""
  * The above command does not work at the moment, needs adjusting.
  */
-runAllSeeds();
+// runAllSeeds();

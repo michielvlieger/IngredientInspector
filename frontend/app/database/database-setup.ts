@@ -1,16 +1,17 @@
 import { Database, appSchema } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
-import { preferencesSchema, ingredientsSchema } from '@schemas/index.schema';
-import { PreferencesModel, IngredientsModel } from '@models/index.model';
+import { preferencesSchema, ingredientsSchema, categoriesSchema } from '@schemas/index.schema';
+import { PreferencesModel, IngredientsModel, CategoriesModel } from '@models/index.model';
 import { Platform } from 'react-native';
 
 const adapter = new SQLiteAdapter({
   // dbName: 'database.sqlite3', // Optional, useful for debugging.
   schema: appSchema({
-  version: 2,  // Increment this number every time the database is changed.
+  version: 1,  // Increment this number every time the database is changed. Only when migration strategy is implemented.
   tables: [
       preferencesSchema,
       ingredientsSchema,
+      categoriesSchema,
     ],
   }),
   jsi: Platform.OS === 'ios', // Dynamically set to true if the platform is iOS.
@@ -25,6 +26,7 @@ const database = new Database({
   modelClasses: [
     PreferencesModel,
     IngredientsModel,
+    CategoriesModel,
   ],
 });
 
