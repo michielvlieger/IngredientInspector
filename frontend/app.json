@@ -33,7 +33,8 @@
     "plugins": [
       "expo-router",
       [
-        "@morrowdigital/watermelondb-expo-plugin"
+        "@morrowdigital/watermelondb-expo-plugin",
+        { "disableJSI": true }
       ],
       [
         "expo-build-properties",

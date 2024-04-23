@@ -1,5 +1,7 @@
-import PreferenceModel from "./preference.model";
+import IngredientsModel from "./ingredients.model";
+import PreferencesModel from "./preferences.model";
 
 export {
-    PreferenceModel,
+    PreferencesModel,
+    IngredientsModel,
 }
