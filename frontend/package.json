@@ -7,7 +7,8 @@
     "android": "npx expo run:android",
     "ios": "npx expo run:ios",
     "web": "expo start --web",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "android-usb": "adb start-server & npx expo start --tunnel"
   },
   "jest": {
     "preset": "jest-expo"

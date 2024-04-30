@@ -1,8 +1,12 @@
 import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Camera, CameraCapturedPicture, CameraType, PermissionResponse } from 'expo-camera';
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
+import { Feather, Ionicons } from '@expo/vector-icons';
+import Colors from '@/constants/Colors';
+import { useColorScheme } from '@/components/useColorScheme';
 
 export default function TabTwoScreen() {
+  const colorScheme = useColorScheme();
   const [hasCameraPermission, setHasCameraPermission] = useState<PermissionResponse>();
   const [photo, setPhoto] = useState<CameraCapturedPicture>();
 
@@ -22,10 +26,7 @@ export default function TabTwoScreen() {
   if (photo) {
     return <View
       style={{
-        backgroundColor: 'transparent',
-        flex: 1,
-        width: '100%',
-        height: '100%'
+        flex: 1
       }}
     >
       <ImageBackground
@@ -33,7 +34,17 @@ export default function TabTwoScreen() {
         style={{
           flex: 1
         }}
-      />
+      >
+        <TouchableOpacity
+          onPress={() => setPhoto(undefined)}
+          style={{
+            position: 'absolute',
+            top: 20,
+            left: 20,
+          }}>
+          <Ionicons name="chevron-back-circle" size={30} color={'white'} />
+        </TouchableOpacity>
+      </ImageBackground>
     </View>
   }
 
@@ -50,49 +61,39 @@ export default function TabTwoScreen() {
   }
 
   return (
-    <Camera style={styles.container} type={CameraType.back} ref={(r) => {
-      cameraRef = r
+    <View style={{
+      flex: 1,
+      flexDirection: 'column'
     }}>
+      <Camera
+        type={CameraType.back}
+        style={{
+          flex: 1
+        }} ref={(r) => {
+          cameraRef = r
+        }}
+      />
       <View
         style={{
-          position: 'absolute',
-          bottom: 0,
-          flexDirection: 'row',
-          flex: 1,
-          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: Colors[colorScheme ?? 'light'].background,
+          minHeight: 50,
           padding: 20,
-          justifyContent: 'space-between'
         }}>
-        <View
-          style={{
-            alignSelf: 'center',
-            flex: 1,
-            alignItems: 'center'
-          }}>
           <TouchableOpacity
             onPress={takePicture}
             style={{
-              width: 70,
-              height: 70,
-              bottom: 0,
+              width: 80,
+              height: 80,
               borderRadius: 50,
-              backgroundColor: '#fff'
-            }} />
+            backgroundColor: Colors[colorScheme ?? 'light'].tint,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }} >
+          <Feather name='camera' size={45} color={Colors[colorScheme ?? 'light'].background} />
+        </TouchableOpacity>
         </View>
-      </View>
-    </Camera>
+    </View >
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    backgroundColor: '#fff',
-    alignSelf: 'flex-end',
-  },
-});
-
