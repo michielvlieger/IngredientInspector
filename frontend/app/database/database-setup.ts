@@ -1,7 +1,7 @@
 import { Database, appSchema } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
-import { preferencesSchema, ingredientsSchema, categoriesSchema } from '@schemas/index.schema';
-import { PreferencesModel, IngredientsModel, CategoriesModel } from '@models/index.model';
+import { preferencesSchema, ingredientsSchema, categoriesSchema, categoriesHasIngredientsSchema } from '@schemas/index.schema';
+import { PreferencesModel, IngredientsModel, CategoriesModel, CategoriesHasIngredientsModel } from '@models/index.model';
 import { Platform } from 'react-native';
 
 const adapter = new SQLiteAdapter({
@@ -12,6 +12,7 @@ const adapter = new SQLiteAdapter({
       preferencesSchema,
       ingredientsSchema,
       categoriesSchema,
+      categoriesHasIngredientsSchema,
     ],
   }),
   jsi: Platform.OS === 'ios', // Dynamically set to true if the platform is iOS.
@@ -27,6 +28,7 @@ const database = new Database({
     PreferencesModel,
     IngredientsModel,
     CategoriesModel,
+    CategoriesHasIngredientsModel,
   ],
 });
 

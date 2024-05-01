@@ -5,7 +5,6 @@ import { date, field } from '@nozbe/watermelondb/decorators';
 
 class CategoriesModel extends Model implements AuditableInterface, CategoriesInterface {
   static readonly table = 'categories';
-
   @field('name') name!: string;
   @date('created_at') updatedAt!: number;
   @date('updated_at') createdAt!: number;
