@@ -10,19 +10,21 @@ const seedCategoriesHasIngredients = async (): Promise<void> => {
     const categoriesHasIngredientsCollection: Collection<CategoriesHasIngredientsModel> = database.collections.get('categories_has_ingredients');
 
     const categories = await categoriesCollection.query(Q.where('name', 'Vegan')).fetch();
-    const ingredients = await ingredientsCollection.query(Q.where('key', 'en:tomato')).fetch();
 
-    if (categories.length === 0 || ingredients.length === 0 ) {
-      console.error('No category or ingredient found matching the criteria.');
-      return;
-    }
-
-  const seedData: (CategoriesHasIngredientsInterface)[] = [
-      {
-        category: categories[0],
-        ingredient: ingredients[0]
-      },
-    ];
+    const seedData: (CategoriesHasIngredientsInterface)[] = [
+        {
+          category: categories[0],
+          ingredient: (await ingredientsCollection.query(Q.where('key', 'en:tomato')).fetch())[0],
+        },
+        {
+          category: categories[0],
+          ingredient: (await ingredientsCollection.query(Q.where('key', 'en:free-range-eggs')).fetch())[0],
+        },
+        {
+          category: categories[0],
+          ingredient: (await ingredientsCollection.query(Q.where('key', 'en:free-range-egg-yolk')).fetch())[0],
+        },
+      ];
 
     await Promise.all(seedData.map(async data => {
       await categoriesHasIngredientsCollection.create(entry => {
