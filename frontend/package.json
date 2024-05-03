@@ -21,9 +21,12 @@
     "@nozbe/watermelondb": "^0.27.1",
     "@nozbe/with-observables": "^1.6.0",
     "@react-navigation/native": "^6.0.2",
+    "axios": "^1.6.8",
     "expo": "~50.0.14",
     "expo-build-properties": "~0.11.1",
+    "expo-camera": "~14.1.2",
     "expo-font": "~11.10.3",
+    "expo-image": "~1.10.6",
     "expo-linking": "~6.2.2",
     "expo-router": "~3.4.8",
     "expo-splash-screen": "~0.26.4",
@@ -36,8 +39,7 @@
     "react-native": "0.73.6",
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
-    "react-native-web": "~0.19.6",
-    "expo-camera": "~14.1.2"
+    "react-native-web": "~0.19.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
