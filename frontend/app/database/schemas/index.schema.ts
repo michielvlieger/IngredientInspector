@@ -1,5 +1,11 @@
-import preferenceSchema from "./preference.schema";
+import categoriesHasIngredientsSchema from "./categories-has-ingredients.schema";
+import categoriesSchema from "./categories.schema";
+import ingredientsSchema from "./ingredients.schema";
+import preferencesSchema from "./preferences.schema";
 
 export {
-    preferenceSchema,
+    preferencesSchema,
+    ingredientsSchema,
+    categoriesSchema,
+    categoriesHasIngredientsSchema,
 }

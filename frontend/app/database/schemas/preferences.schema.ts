@@ -1,7 +1,7 @@
 import { tableSchema } from '@nozbe/watermelondb';
 
-const preferenceSchema = tableSchema({
-      name: 'preference',
+const preferencesSchema = tableSchema({
+      name: 'preferences',
       columns: [
         { name: 'title', type: 'string' },
         { name: 'description', type: 'string' },
@@ -10,4 +10,4 @@ const preferenceSchema = tableSchema({
       ],
     });
 
-export default preferenceSchema;
+export default preferencesSchema;
