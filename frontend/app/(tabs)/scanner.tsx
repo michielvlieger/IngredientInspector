@@ -1,8 +1,8 @@
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import { Camera, CameraType, PermissionResponse } from 'expo-camera';
 import { useEffect, useState } from 'react';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import Colors, { colorSchemeType } from '@/constants/Colors';
+import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { Image } from 'expo-image';
 import { Text } from '@/components/Themed';
@@ -10,6 +10,7 @@ import { PermissionInfo } from '@/components/PermissionInfo'
 import { Product } from '@/components/Product'
 import axios, { AxiosPromise } from 'axios';
 import { productType } from '../interfaces/product.interface';
+import { aiResultType } from '../interfaces/ai-result.interface';
 import { scannerResultType } from '../interfaces/scanner-result.interface';
 
 export default function TabTwoScreen() {
@@ -24,26 +25,81 @@ export default function TabTwoScreen() {
     })();
   }, []);
 
+  let createAIRun = async (photoUri: string, runName: string) => {
+    const localUri = Platform.OS === 'ios' ? photoUri.replace('file://', '') : photoUri;
+    const response = await fetch(localUri);
+    const photoBlob = await response.blob();
+    const arrayBuffer = await new Response(photoBlob).arrayBuffer();
+    await axios.put(`https://iicomputervision.cognitiveservices.azure.com/computervision/productrecognition/aimodel/runs/${runName}?api-version=2023-04-01-preview`,
+      arrayBuffer,
+      {
+        headers: { 'Ocp-Apim-Subscription-Key': '981d6f4220b94493a24b83e7d916a8b7', 'Content-Type': 'image/jpg' },
+        maxBodyLength: Infinity,
+        maxContentLength: Infinity,
+      }).catch(error => {
+        console.log(error);
+      });
+  }
+
+  let readAIRun = async (runName: string): Promise<aiResultType[]> => {
+    return new Promise((resolve, reject) => {
+      let i = 0;
+      let intervalId = setInterval(async () => {
+        if (i > 10) reject();
+
+        await axios.get(`https://iicomputervision.cognitiveservices.azure.com/computervision/productrecognition/aimodel/runs/${runName}?api-version=2023-04-01-preview`,
+          { headers: { 'Ocp-Apim-Subscription-Key': '981d6f4220b94493a24b83e7d916a8b7', 'Content-Type': 'application/json' } }).then(response => {
+            if (response.data.status === 'succeeded') {
+              resolve(response.data.result.products);
+              clearInterval(intervalId);
+            }
+          }).catch(error => {
+            console.log(error);
+          });
+
+        i++;
+      }, 2000);
+    })
+  }
+
   let scanPhoto = async (photoUri: string) => {
-    //call AI to get list of products
-    //for now a hardcoded list of ingredients
-    const productIds = [8717903964156, 8717903961056, 8710448464129, 8710448634744, 8717903961254, 8710448564546, 4718901825870, 8711200559435, 8720182286604];
-    //call openfoodfacts to get product information
+    const runName = Date.now().toString();
+
+    await createAIRun(photoUri, runName);
+    const aiResults = await readAIRun(runName);
+
     let productArr: Array<productType> = [];
     let promises: Array<AxiosPromise> = [];
-    productIds.forEach(productId => { promises.push(axios.get('https://world.openfoodfacts.org/api/v2/product/' + productId)) })
+    aiResults.forEach(aiResult => {
+      if (aiResult.tags[0].confidence > 0.8) {
+        const productIndex = productArr.findIndex((product) => product.id === aiResult.tags[0].name);
+        if (productIndex !== -1) {
+          productArr[productIndex].boundingBoxes.push(aiResult.boundingBox)
+        } else {
+          let newProduct: productType = {
+            id: aiResult.tags[0].name,
+            image: '',
+            name: '',
+            brand: '',
+            boundingBoxes: [],
+          };
+          newProduct.boundingBoxes.push(aiResult.boundingBox);
+          productArr.push(newProduct);
+          promises.push(axios.get('https://world.openfoodfacts.org/api/v2/product/' + aiResult.tags[0].name))
+        }
+      };
+    });
+
     await Promise.all(promises).then(results => {
       results.forEach(response => {
-        let product: productType = {
-          id: response.data.code,
-          image: response.data.product.image_front_small_url,
-          name: response.data.product.product_name,
-          brand: response.data.product.brands,
-        }
-        productArr.push(product)
-      })
-    })
-    return productArr
+        let productIndex = productArr.findIndex((product) => product.id === response.data.code);
+        productArr[productIndex].name = response.data.product.product_name;
+        productArr[productIndex].brand = response.data.product.brands;
+        productArr[productIndex].image = response.data.product.image_front_small_url;
+      });
+    });
+
+    return productArr;
   }
 
   let cameraRef: Camera | null;
@@ -56,6 +112,7 @@ export default function TabTwoScreen() {
     };
     let newPhoto = await cameraRef.takePictureAsync(options);
     let scannedProducts = await scanPhoto(newPhoto.uri);
+    if (typeof scannedProducts === 'string') { return scannedProducts }
     setScannerResult({ photoUri: newPhoto.uri, products: scannedProducts })
   }
 

@@ -1,6 +1,9 @@
+import { boundingBoxType } from "./ai-result.interface";
+
 export interface productType {
-    id: number;
+    id: string;
     image: string;
     name: string;
     brand: string;
+    boundingBoxes: boundingBoxType[];
 }
