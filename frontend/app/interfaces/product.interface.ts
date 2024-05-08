@@ -1,9 +1,9 @@
-import { boundingBoxType } from "./ai-result.interface";
+import { BoundingBoxInterface } from '@interfaces/index.interface';
 
-export interface productType {
+export interface ProductInterface {
     id: string;
     image: string;
     name: string;
     brand: string;
-    boundingBoxes: boundingBoxType[];
+    boundingBoxes: BoundingBoxInterface[];
 }

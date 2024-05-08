@@ -1,17 +1,7 @@
-export interface aiResultType {
+import { BoundingBoxInterface, TagInterface, } from '@interfaces/index.interface';
+
+export interface AIResultInterface {
     id: string;
-    boundingBox: boundingBoxType;
-    tags: Array<tagType>;
-}
-
-export interface boundingBoxType {
-    x: string;
-    y: string;
-    w: string;
-    h: string;
-}
-
-export interface tagType {
-    name: string;
-    confidence: number;
+    boundingBox: BoundingBoxInterface;
+    tags: TagInterface[];
 }

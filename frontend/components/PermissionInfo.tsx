@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 
 type Props = {
     text: string,
-    colorScheme: colorSchemeType
+    colorScheme: colorSchemeType;
 };
 
 export function PermissionInfo({ text, colorScheme }: Props) {

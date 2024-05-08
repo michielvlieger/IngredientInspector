@@ -20,7 +20,7 @@ export default {
   },
 };
 
-export interface colorSchemeType {
+export interface ColorSchemeInterface {
   text: string;
   background: string;
   tint: string;

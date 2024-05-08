@@ -1,6 +1,6 @@
-import { productType } from "./product.interface";
+import { ProductInterface } from '@interfaces/index.interface';
 
-export interface scannerResultType {
+export interface ScannerResultInterface {
     photoUri: string;
-    products: Array<productType>;
+    products: ProductInterface[];
 }
