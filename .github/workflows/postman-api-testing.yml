@@ -19,10 +19,10 @@ jobs:
 
         - name: Login to Postman CLI
           run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-          
+
         - name: Run API tests
           run: |
-            postman collection run "${{ github.workspace }}/postman/collections/Azure Vision.json" --integration-id "162738-${{ github.run_id }}"
-            postman collection run "${{ github.workspace }}/postman/collections/OpenFoodFacts.json" --integration-id "162738-${{ github.run_id }}"  
+            postman collection run 5663493-8a28fab3-3465-4f69-b9fd-cbca6bff5a89
+            postman collection run 5663493-7dccfde7-0a82-4825-9e29-6bec947884c5  
             
 
