@@ -22,7 +22,7 @@ jobs:
 
         - name: Run API tests
           run: |
-            postman collection run 5663493-8a28fab3-3465-4f69-b9fd-cbca6bff5a89
-            postman collection run 5663493-7dccfde7-0a82-4825-9e29-6bec947884c5  
+            postman collection run 5663493-a5fd178c-f7a8-4401-af14-e017c47ede2f
+            postman collection run 5663493-ae347f91-39df-42e1-9596-0cd07d03eaa6  
             
 
