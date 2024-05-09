@@ -1,4 +1,4 @@
-name: Automated API tests using Postman CLI
+name: Automated API integration tests using Postman CLI
 on:
   push:
       branches:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  automated-api-tests:
+  automated-integration-tests:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
@@ -20,9 +20,10 @@ jobs:
         - name: Login to Postman CLI
           run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
 
-        - name: Run API tests
-          run: |
-            postman collection run 5663493-a5fd178c-f7a8-4401-af14-e017c47ede2f
-            postman collection run 5663493-ae347f91-39df-42e1-9596-0cd07d03eaa6  
+        - name: Run integration tests Azure Vision API
+          run: postman collection run 5663493-a5fd178c-f7a8-4401-af14-e017c47ede2f
+
+        - name: Run integration tests OpenFoodFacts API
+          run: postman collection run 5663493-ae347f91-39df-42e1-9596-0cd07d03eaa6
             
 
