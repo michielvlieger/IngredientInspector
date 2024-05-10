@@ -7,7 +7,8 @@ import { TagInterface } from "./tag.interface";
 import { ProductInterface } from "./product.interface";
 import { BoundingBoxInterface } from "./bounding-box.interface";
 import { AIResultInterface } from "./ai-result.interface";
-import { ScannerResultInterface } from "./scanner-result.interface";
+import { ColorSchemeInterface } from "./color-scheme.interface";
+import { OpenfoodfactsIngredientInterface } from "./openfoodfacts-ingredient.interface";
 
 export {
     AuditableInterface,
@@ -19,5 +20,6 @@ export {
     TagInterface,
     BoundingBoxInterface,
     ProductInterface,
-    ScannerResultInterface,
+    ColorSchemeInterface,
+    OpenfoodfactsIngredientInterface,
 }

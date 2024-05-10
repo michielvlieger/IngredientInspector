@@ -1,22 +1,22 @@
-import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, TouchableOpacity, useColorScheme } from 'react-native';
 import { Camera, CameraType, PermissionResponse } from 'expo-camera';
 import { useEffect, useState } from 'react';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
 import { Image } from 'expo-image';
-import { Text } from '@/components/Themed';
+import { Text, View } from '@/components/Themed';
 import { PermissionInfo } from '@/components/PermissionInfo'
-import { Product } from '@/components/Product'
+import { ScannerResult } from '@/components/ScannerResult'
 import axios, { AxiosPromise } from 'axios';
-import { AIResultInterface, ProductInterface, ScannerResultInterface } from '@interfaces/index.interface';
+import { AIResultInterface, IngredientsInterface, OpenfoodfactsIngredientInterface, ProductInterface } from '@interfaces/index.interface';
 
 
 
 export default function TabTwoScreen() {
   const colorScheme = Colors[useColorScheme() ?? 'light'];
   const [hasCameraPermission, setHasCameraPermission] = useState<PermissionResponse>();
-  const [scannerResult, setScannerResult] = useState<ScannerResultInterface>();
+  const [scannerResult, setScannerResult] = useState<ProductInterface[]>();
+  const [photoUri, setPhotoUri] = useState<string>();
 
   useEffect(() => {
     (async () => {
@@ -24,6 +24,18 @@ export default function TabTwoScreen() {
       setHasCameraPermission(cameraPermission);
     })();
   }, []);
+
+  const getIngredients = (ingredients: OpenfoodfactsIngredientInterface[]) => {
+    let ingredientArr: IngredientsInterface[] = []
+    ingredients.forEach((ingredient: OpenfoodfactsIngredientInterface) => {
+      if ('ingredients' in ingredient && ingredient.ingredients) {
+        ingredientArr = ingredientArr.concat(getIngredients(ingredient.ingredients))
+      } else {
+        ingredientArr.push({ key: ingredient.id, name: ingredient.text });
+      };
+    });
+    return ingredientArr
+  }
 
   const createAIRun = async (photoUri: string, runName: string) => {
     const localUri = Platform.OS === 'ios' ? photoUri.replace('file://', '') : photoUri;
@@ -86,6 +98,7 @@ export default function TabTwoScreen() {
             name: '',
             brand: '',
             boundingBoxes: [],
+            ingredients: [],
           };
           newProduct.boundingBoxes.push(aiResult.boundingBox);
           productArr.push(newProduct);
@@ -100,8 +113,9 @@ export default function TabTwoScreen() {
         productArr[productIndex].name = response.data.product.product_name;
         productArr[productIndex].brand = response.data.product.brands;
         productArr[productIndex].image = response.data.product.image_front_small_url;
+        if ('ingredients' in response.data.product) productArr[productIndex].ingredients = getIngredients(response.data.product.ingredients);
       });
-    });
+    }).catch(error => console.error(error));
 
     return productArr;
   }
@@ -111,13 +125,13 @@ export default function TabTwoScreen() {
     if (!cameraRef) return;
     const options = {
       quality: 1,
-      base64: true,
+      base64: false,
       exif: false
     };
     const newPhoto = await cameraRef.takePictureAsync(options);
+    setPhotoUri(newPhoto.uri);
     const scannedProducts = await scanPhoto(newPhoto.uri);
-    if (typeof scannedProducts === 'string') { return scannedProducts }
-    setScannerResult({ photoUri: newPhoto.uri, products: scannedProducts })
+    setScannerResult(scannedProducts)
   }
 
   if (!hasCameraPermission) {
@@ -126,14 +140,15 @@ export default function TabTwoScreen() {
     return <PermissionInfo text='Zet uw camerapermissie aan in uw instellingen.' colorScheme={colorScheme} />
   }
 
-  if (scannerResult) {
-    const productViews: React.JSX.Element[] = [];
-    scannerResult.products.map(product => { productViews.push(<Product key={product.id} product={product} colorScheme={colorScheme} />) })
+  if (photoUri) {
     return (
       <ScrollView>
         <View style={{ height: 400, minHeight: 150, backgroundColor: colorScheme.tintedBackground, marginBottom: 40 }}>
           <TouchableOpacity
-            onPress={() => setScannerResult(undefined)}
+            onPress={() => {
+              setScannerResult(undefined);
+              setPhotoUri(undefined);
+            }}
             style={{
               position: 'absolute',
               top: 20,
@@ -142,7 +157,7 @@ export default function TabTwoScreen() {
             <Ionicons name="chevron-back-circle" size={30} color={'white'} />
           </TouchableOpacity>
           <Image
-            source={{ uri: scannerResult.photoUri }}
+            source={{ uri: photoUri }}
             contentFit='contain'
             style={{
               zIndex: -1,
@@ -156,13 +171,7 @@ export default function TabTwoScreen() {
           borderTopLeftRadius: 30,
           borderTopRightRadius: 30,
         }}>
-          <Text style={{
-            color: colorScheme.text,
-            fontSize: 35,
-            fontWeight: 'bold',
-            marginBottom: 10
-          }}>Products</Text>
-          {productViews}
+          <ScannerResult scannerResult={scannerResult} colorScheme={colorScheme} />
         </View>
       </ScrollView>
     )

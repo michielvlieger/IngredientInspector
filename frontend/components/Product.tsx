@@ -1,11 +1,10 @@
-import { productType } from '@/app/interfaces/product.interface';
-import { colorSchemeType } from '@/constants/Colors';
+import { ProductInterface, ColorSchemeInterface } from '@interfaces/index.interface';
 import { Image } from 'expo-image';
 import { Text, View } from 'react-native';
 
 type Props = {
-    product: productType;
-    colorScheme: colorSchemeType
+    product: ProductInterface;
+    colorScheme: ColorSchemeInterface
 };
 
 export function Product({ product, colorScheme }: Props) {
