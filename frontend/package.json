@@ -8,7 +8,7 @@
     "ios": "npx expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "android-usb": "adb start-server & npx expo start --tunnel",
+    "android-usb": "adb start-server && npx expo run:android --devices",
     "seeds": "ts-node --project ./tsconfig.json -e \"require('./app/database/seeds/index.seeds').runAllSeeds()\""
   },
   "jest": {
@@ -22,11 +22,12 @@
     "@nozbe/watermelondb": "^0.27.1",
     "@nozbe/with-observables": "^1.6.0",
     "@react-navigation/native": "^6.0.2",
-    "better-sqlite3": "^9.5.0",
     "axios": "^1.6.8",
+    "better-sqlite3": "^9.5.0",
     "expo": "~50.0.14",
     "expo-build-properties": "~0.11.1",
     "expo-camera": "~14.1.2",
+    "expo-dev-client": "~3.3.11",
     "expo-font": "~11.10.3",
     "expo-image": "~1.10.6",
     "expo-linking": "~6.2.2",
@@ -41,14 +42,14 @@
     "react-native": "0.73.6",
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
-    "react-native-web": "~0.19.6",
-    "expo-dev-client": "~3.3.11"
+    "react-native-web": "~0.19.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@types/jest": "^29.5.12",
     "@types/react": "~18.2.45",
     "@types/react-native": "^0.73.0",
-    "jest": "^29.2.1",
+    "jest": "^29.7.0",
     "jest-expo": "~50.0.4",
     "react-test-renderer": "18.2.0",
     "ts-node": "^10.9.2",

@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 import { Image } from 'expo-image';
-import { Text, View } from '@/components/Themed';
+import { View } from '@/components/Themed';
 import { PermissionInfo } from '@/components/PermissionInfo'
 import { ScannerResult } from '@/components/ScannerResult'
 import axios, { AxiosPromise } from 'axios';
 import { AIResultInterface, IngredientsInterface, OpenfoodfactsIngredientInterface, ProductInterface } from '@interfaces/index.interface';
+import { Q } from '@nozbe/watermelondb'
+import { database } from '../database/database-setup';
 
 
 
@@ -99,6 +101,7 @@ export default function TabTwoScreen() {
             brand: '',
             boundingBoxes: [],
             ingredients: [],
+            isOkayForUser: false,
           };
           newProduct.boundingBoxes.push(aiResult.boundingBox);
           productArr.push(newProduct);
@@ -108,12 +111,24 @@ export default function TabTwoScreen() {
     });
 
     await Promise.all(promises).then(results => {
-      results.forEach(response => {
+      results.forEach(async response => {
         const productIndex = productArr.findIndex((product) => product.id === response.data.code);
         productArr[productIndex].name = response.data.product.product_name;
         productArr[productIndex].brand = response.data.product.brands;
         productArr[productIndex].image = response.data.product.image_front_small_url;
-        if ('ingredients' in response.data.product) productArr[productIndex].ingredients = getIngredients(response.data.product.ingredients);
+        if ('ingredients' in response.data.product) {
+          productArr[productIndex].ingredients = getIngredients(response.data.product.ingredients);
+          /**
+           * TODO: find ingredients that the user doesn't want and look if it is in productArr[productIndex].ingredients
+           * 
+           * temperarily giving random value
+           */
+          // const badIngredients = await database.get('ingredients').query(
+          //   Q.where('toggled', true)
+          // ).fetch();
+          productArr[productIndex].isOkayForUser = Math.random() < 0.5;
+        }
+
       });
     }).catch(error => console.error(error));
 
