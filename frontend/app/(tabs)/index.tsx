@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { Text, View } from '@/components/Themed';
-import CheckboxList from '@/components/CheckboxList';
+import { Text, View } from 'components/Themed';
+import CheckboxList from 'components/CheckboxList';
 
 export default function TabOneScreen() {
   const items = [

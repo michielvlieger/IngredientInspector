@@ -20,6 +20,3 @@ export default {
         tintedBackground: '#2a2a2a',
     },
 };
-
-
-// TODO: please see comment in: frontend/components/Product.tsx, related to this file.

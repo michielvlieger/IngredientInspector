@@ -1,9 +1,9 @@
-import { colorSchemeType } from '@/constants/Colors';
+import { ColorSchemeInterface } from '@interfaces';
 import { Text, View } from 'react-native';
 
 type Props = {
     text: string,
-    colorScheme: colorSchemeType;
+    colorScheme: ColorSchemeInterface;
 };
 
 export function PermissionInfo({ text, colorScheme }: Props) {

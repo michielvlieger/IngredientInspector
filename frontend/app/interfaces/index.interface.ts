@@ -9,6 +9,7 @@ import { ProductInterface } from "./product.interface";
 import { BoundingBoxInterface } from "./bounding-box.interface";
 import { AIResultInterface } from "./ai-result.interface";
 import { ScannerResultInterface } from "./scanner-result.interface";
+import { ColorSchemeInterface } from "./color-scheme-interface";
 
 export {
     AuditableInterface,
@@ -17,4 +18,10 @@ export {
     CategoriesInterface,
     CheckboxOption,
     CategoriesHasIngredientsDTO,
+    ScannerResultInterface,
+    ProductInterface,
+    AIResultInterface,
+    BoundingBoxInterface,
+    TagInterface,
+    ColorSchemeInterface,
 }
