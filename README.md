@@ -23,6 +23,7 @@ Instructions to run the "Ingredient Inspector" application can be found here:
 - [Running Your React Native Application](https://reactnative.dev/docs/environment-setup?guide=native#running-your-react-native-application)
   - `npm run ios` for iOS devices.
   - `npm run android` for Android devices.
+  - `npm run android usb` for Android devices through usb debugging.
   - `npm run` to execute other npm scripts as defined in `package.json`.
 
 ## Command Shortcuts
