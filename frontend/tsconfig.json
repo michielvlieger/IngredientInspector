@@ -1,26 +1,29 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
     "strict": true,
-    "experimentalDecorators": true, // Enable decorator support.
-    "emitDecoratorMetadata": true, // Emit additional metadata for decorators.
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
-      "@/*": [
-        "./*"
+      "@interfaces": [
+        "app/interfaces/index.interface.ts"
       ],
-      "@interfaces/*": [
-        "app/interfaces/*",
+      "@services": [
+        "app/services/index.interface.ts"
       ],
-      "@models/*": [
-        "app/database/models/*",
+      "@constants": [
+        "app/constants/index.constants.ts"
       ],
-      "@schemas/*": [
-        "app/database/schemas/*",
+      "@models": [
+        "app/database/models/index.model.ts"
       ],
-      "@seeds/*": [
-        "app/database/seeds/*",
+      "@schemas": [
+        "app/database/schemas/index.schemas.ts"
       ],
+      "@seeds": [
+        "app/database/seeds/index.seeds.ts"
+      ]
     }
   },
   "include": [
@@ -29,5 +32,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
   ],
-  "outDir": "./dist", // Output directory for the compiled JavaScript files.
+  "outDir": "./dist"
 }

@@ -3,7 +3,7 @@ import seedCategories from "./categories.seeder";
 import seedIngredients from "./ingredients.seeder";
 import seedPreferences from "./preferences.seeder";
 
-async function runAllSeeds(){
+async function runAllSeeds() {
     try {
         console.info('Seeding preferences...');
         await seedPreferences();
@@ -22,7 +22,7 @@ async function runAllSeeds(){
         console.info('Categories_has_ingredients seeded.');
 
         console.info('Completed seeding database.');
-    } catch(error) {
+    } catch (error) {
         console.error('Failed seeding database:', error);
     }
 }
@@ -34,7 +34,7 @@ export default runAllSeeds;
  * Seed database. Temporarily enable if you need to seed your database.
  * "seeds": "ts-node --project ./tsconfig.json -e \"require('./app/database/seeds/index.seeds').runAllSeeds()\""
  * The above command does not work at the moment, needs adjusting.
- * 
+ *
  * TODO: make migrations table that stores each table name as a string upon seeding success.
  * Used for checking if seeding is necessary or not. That way, below function can stay enabled.
  */

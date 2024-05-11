@@ -1,6 +1,7 @@
-import { AuditableInterface, PreferencesInterface } from '@/app/interfaces/index.interface';
+import { PreferencesInterface } from '@interfaces';
 import { Model } from '@nozbe/watermelondb';
 import { field, date } from '@nozbe/watermelondb/decorators';
+import { AuditableInterface } from 'app/interfaces/auditable.interface';
 
 class PreferencesModel extends Model implements AuditableInterface, PreferencesInterface {
   static readonly table = 'preferences';
