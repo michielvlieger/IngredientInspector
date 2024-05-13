@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import CheckboxComponent from 'components/Checkbox';
 import { allCategoriesWithIngredientsWithCheckboxes, insertOrUpdateCategoryIngredientRelation } from '@hooks';
 import { IngredientsModel } from '@models';
