@@ -1,5 +1,5 @@
-import categoriesHasIngredientsService from "./categories-has-ingredients.service"
+import getAllCategoriesWithIngredients from "./categories-has-ingredients.service"
 
 export {
-    categoriesHasIngredientsService,
+    getAllCategoriesWithIngredients,
 }

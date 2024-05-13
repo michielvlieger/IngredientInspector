@@ -1,4 +1,4 @@
-import { IngredientsInterface } from '@interfaces';
+import { AuditableInterface, IngredientsInterface } from '@interfaces';
 import { Model, Q } from '@nozbe/watermelondb';
 import { date, field, lazy } from '@nozbe/watermelondb/decorators';
 

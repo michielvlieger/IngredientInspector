@@ -2,7 +2,7 @@ import { AuditableInterface } from "./auditable.interface";
 import { CategoriesInterface } from "./categories.interface";
 import { IngredientsInterface } from "./ingredients.interface";
 import { PreferencesInterface } from "./preferences.interface";
-import { CheckboxOption } from "./checkbox-option.interface";
+import { CheckboxInterface } from "./checkbox-interface";
 import { CategoriesHasIngredientsDTO } from "./categories-has-ingredients.dto";
 import { TagInterface } from "./tag.interface";
 import { ProductInterface } from "./product.interface";
@@ -16,7 +16,7 @@ export {
     IngredientsInterface,
     PreferencesInterface,
     CategoriesInterface,
-    CheckboxOption,
+    CheckboxInterface,
     CategoriesHasIngredientsDTO,
     ScannerResultInterface,
     ProductInterface,

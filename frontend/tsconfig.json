@@ -10,10 +10,16 @@
         "app/interfaces/index.interface.ts"
       ],
       "@services": [
-        "app/services/index.interface.ts"
+        "app/services/index.service.ts"
+      ],
+      "@hooks": [
+        "app/hooks/index.hooks.ts"
       ],
       "@constants": [
         "app/constants/index.constants.ts"
+      ],
+      "@styles": [
+        "styles/index.ts"
       ],
       "@models": [
         "app/database/models/index.model.ts"
