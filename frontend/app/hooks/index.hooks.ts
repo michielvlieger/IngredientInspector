@@ -1,5 +1,6 @@
-import allCategoriesWithIngredientsWithCheckboxes from "./categories-has-ingredients.service";
+import { allCategoriesWithIngredientsWithCheckboxes, insertOrUpdateCategoryIngredientRelation } from "./categories-has-ingredients.service";
 
 export {
     allCategoriesWithIngredientsWithCheckboxes,
+    insertOrUpdateCategoryIngredientRelation,
 }

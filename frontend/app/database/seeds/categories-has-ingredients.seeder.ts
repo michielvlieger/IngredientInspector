@@ -1,7 +1,9 @@
 import { Collection, Q, RecordId } from '@nozbe/watermelondb';
-import { CategoriesHasIngredientsModel, CategoriesModel, IngredientsModel } from '@models/index.model';
 import { database } from '../database-setup';
-import { CategoriesInterface, IngredientsInterface } from '@interfaces/index.interface';
+import { CategoriesInterface, IngredientsInterface } from '@interfaces';
+import CategoriesHasIngredientsModel from '../models/categories-has-ingredients.model';
+import { CategoriesModel, IngredientsModel } from '@models';
+
 
 const seedCategoriesHasIngredients = async (): Promise<void> => {
   await database.write(async () => {
@@ -29,7 +31,7 @@ const seedCategoriesHasIngredients = async (): Promise<void> => {
     await Promise.all(seedData.map(async data => {
       await categoriesHasIngredientsCollection.create(entry => {
         entry.category.id = data.category.id;
-        entry.ingredient.id = data.ingredient.id;
+        entry.ingredient.id = data.ingredient.key;  // TODO: check if this can't be named '.id' instead of '.key'. Back then I did it because of conflicts because 'id' is reserved by WatermelonDB. But now I am wondering why 'category.id' works then. Check when you have time. No high priority.
       });
     }));
 

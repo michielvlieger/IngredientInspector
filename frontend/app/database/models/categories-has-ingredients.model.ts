@@ -1,4 +1,4 @@
-import { AuditableInterface } from '@interfaces/auditable.interface';
+import { AuditableInterface } from '@interfaces';
 import { Model } from '@nozbe/watermelondb';
 import { field, immutableRelation } from '@nozbe/watermelondb/decorators';
 
@@ -9,6 +9,7 @@ class CategoriesHasIngredientsModel extends Model implements AuditableInterface 
     ingredients: { type: 'belongs_to', key: 'ingredient_id' },
   } as const;  // Use 'as const' to ensure type literals are used.
 
+  @field('checked') checked!: boolean;
   @field('created_at') createdAt!: number;
   @field('updated_at') updatedAt!: number;
 

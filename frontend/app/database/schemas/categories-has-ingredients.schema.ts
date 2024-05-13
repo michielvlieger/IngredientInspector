@@ -5,6 +5,7 @@ const categoriesHasIngredientsSchema = tableSchema({
   columns: [
     { name: 'category_id', type: 'string', isIndexed: true },
     { name: 'ingredient_id', type: 'string', isIndexed: true },
+    { name: 'checked', type: 'boolean' },
     { name: 'created_at', type: 'number' },
     { name: 'updated_at', type: 'number' }
   ]

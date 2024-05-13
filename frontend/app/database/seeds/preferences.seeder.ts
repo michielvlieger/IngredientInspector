@@ -1,7 +1,7 @@
 import { Collection } from '@nozbe/watermelondb';
-import { AuditableInterface, PreferencesInterface } from '@interfaces/index.interface';
-import { PreferencesModel } from '@models/index.model';
 import { database } from '../database-setup';
+import { PreferencesModel } from '@models';
+import { AuditableInterface, PreferencesInterface } from '@interfaces';
 
 const seedPreferences = async (): Promise<void> => {
   await database.write(async () => {

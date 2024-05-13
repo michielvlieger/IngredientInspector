@@ -4,7 +4,7 @@ import Checkbox from 'expo-checkbox';
 import { colors } from '@styles';
 import { CheckboxInterface } from '@interfaces';
 
-const CheckboxComponent: React.FC<CheckboxInterface> = ({ label, checked, id, onValueChange }) => {
+const CheckboxComponent: React.FC<CheckboxInterface> = ({ label, checked, categoryId, ingredientId, onValueChange }) => {
   const [isChecked, setChecked] = useState(checked);
 
   const handleValueChange = (newCheckedValue: boolean) => {
@@ -12,10 +12,13 @@ const CheckboxComponent: React.FC<CheckboxInterface> = ({ label, checked, id, on
 
 
     if (onValueChange) {
-      onValueChange({
-        key: id,
+      const newValue: CheckboxInterface = {
+        categoryId: categoryId,
+        ingredientId: ingredientId,
+        label: label,
         checked: newCheckedValue,
-      });
+      }
+      onValueChange(newValue);
     }
   };
 

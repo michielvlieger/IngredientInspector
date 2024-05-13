@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { View } from 'react-native';
 import CheckboxComponent from 'components/Checkbox';
-import { allCategoriesWithIngredientsWithCheckboxes } from '@hooks';
+import { allCategoriesWithIngredientsWithCheckboxes, insertOrUpdateCategoryIngredientRelation } from '@hooks';
 import { IngredientsModel } from '@models';
 import HeaderComponent from 'components/Header';
 
@@ -36,10 +36,6 @@ const CheckboxContainer: React.FC = () => {
     );
   }
 
-  function handleCheckboxChange(newValue: { key: string, checked: boolean }): void {
-    console.log(newValue);  // TODO: remove later.
-  }
-
   return (
     <><View>
       <HeaderComponent uri="https://i.imgur.com/yqWH29P.jpeg" />
@@ -51,10 +47,11 @@ const CheckboxContainer: React.FC = () => {
             {categoryWithIngredients.value.map((ingredient, ingIndex) => (
               <CheckboxComponent
                 key={`ingredient-${index}-${ingIndex}`}
-                id={ingredient.id}
+                categoryId={categoryWithIngredients.id}
+                ingredientId={ingredient.id}
                 label={ingredient.label}
                 checked={ingredient.checked}
-                onValueChange={(newValue) => handleCheckboxChange(newValue)} />
+                onValueChange={(newValue) => insertOrUpdateCategoryIngredientRelation(newValue)} />
             ))}
           </View>
         ))}
