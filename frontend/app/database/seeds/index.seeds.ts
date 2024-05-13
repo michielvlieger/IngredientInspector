@@ -1,14 +1,9 @@
 import seedCategoriesHasIngredients from "./categories-has-ingredients.seeder";
 import seedCategories from "./categories.seeder";
 import seedIngredients from "./ingredients.seeder";
-import seedPreferences from "./preferences.seeder";
 
 async function runAllSeeds() {
     try {
-        console.info('Seeding preferences...');
-        await seedPreferences();
-        console.info('Preferences seeded.');
-
         console.info('Seeding categories...');
         await seedCategories();
         console.info('Categories seeded.');

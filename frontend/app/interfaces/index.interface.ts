@@ -1,7 +1,6 @@
 import { AuditableInterface } from "./auditable.interface";
 import { CategoriesInterface } from "./categories.interface";
 import { IngredientsInterface } from "./ingredients.interface";
-import { PreferencesInterface } from "./preferences.interface";
 import { CheckboxInterface } from "./checkbox-interface";
 import { CategoriesHasIngredientsDTO } from "./categories-has-ingredients.dto";
 import { TagInterface } from "./tag.interface";
@@ -14,7 +13,6 @@ import { ColorSchemeInterface } from "./color-scheme-interface";
 export {
     AuditableInterface,
     IngredientsInterface,
-    PreferencesInterface,
     CategoriesInterface,
     CheckboxInterface,
     CategoriesHasIngredientsDTO,
