@@ -36,6 +36,10 @@ jobs:
         - name: install dependencies
           working-directory: ./frontend
           run: npm install
+
+        - name: setting permissions
+          working-directory: ./frontend
+          run: chmod +x eas-hooks/*.sh
             
         - name: build android locally 
           working-directory: ./frontend
