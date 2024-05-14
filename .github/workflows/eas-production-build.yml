@@ -77,7 +77,7 @@ jobs:
           
       - name: Build iOS app
         working-directory: ./frontend
-        run: eas build --platform ios --local --non-interactive --output ${{ github.workspace }}/app-release-ios.ipa
+        run: eas build --platform ios --local --non-interactive --profile development --output ${{ github.workspace }}/app-release-ios.ipa
           
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v2
