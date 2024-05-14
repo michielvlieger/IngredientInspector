@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  automated-build-android:
+  build-android:
       runs-on: ubuntu-latest
       steps:
         - name: Setup repo
@@ -35,21 +35,52 @@ jobs:
             eas-version: latest
             token: ${{ secrets.EXPO_TOKEN }}
         
-        - name: install dependencies
+        - name: Install dependencies
           working-directory: ./frontend
           run: npm ci
 
-        - name: setting permissions
+        - name: Setting permissions
           working-directory: ./frontend
           run: chmod +x eas-hooks/*.sh
             
-        - name: build android locally 
+        - name: Build android locally 
           working-directory: ./frontend
-          run: eas build --platform android --profile preview --local --output ../${{ github.workspace }}/app-release.apk
+          run: eas build --platform android --profile preview --local --output ${{ github.workspace }}/app-release.apk
 
         - name: Upload APK artifact
           uses: actions/upload-artifact@v2
           with:
             name: app-release
             path: ${{ github.workspace }}/app-release.apk
-
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v4
+        
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+          
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+          
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+          
+      - name: Build iOS app
+        working-directory: ./frontend
+        run: eas build --platform ios --local --non-interactive --output ${{ github.workspace }}/app-release-ios.ipa
+          
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release-ios
+          path: ${{ github.workspace }}/app-release-ios.ipa
