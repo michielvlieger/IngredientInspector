@@ -1,24 +1,18 @@
-name: automatic eas build
+name: Android App Release Build
+
 on:
   push:
       branches:
         - main
-        - development
         - scanner-checking-ingredients
   workflow_dispatch:
 
 jobs:
-  automated-build:
+  automated-build-android:
       runs-on: ubuntu-latest
       steps:
-        - name: Check for EXPO_TOKEN
-          run: |
-            if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
-              echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
-              exit 1
-            fi
-
-        - uses: actions/checkout@v4
+        - name: Setup repo
+          uses: actions/checkout@v4
 
         - name: Setup Node
           uses: actions/setup-node@v4
@@ -31,6 +25,9 @@ jobs:
           with:
             distribution: 'zulu'
             java-version: '17'
+        
+        - name: Setup Android SDK
+          uses: android-actions/setup-android@v3
 
         - name: Setup EAS
           uses: expo/expo-github-action@v8
@@ -40,7 +37,7 @@ jobs:
         
         - name: install dependencies
           working-directory: ./frontend
-          run: npm install
+          run: npm ci
 
         - name: setting permissions
           working-directory: ./frontend
@@ -48,5 +45,11 @@ jobs:
             
         - name: build android locally 
           working-directory: ./frontend
-          run: eas build -p android -e test --local
+          run: eas build --platform android --profile preview --local --output ../${{ github.workspace }}/app-release.apk
+
+        - name: Upload APK artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: app-release
+            path: ${{ github.workspace }}/app-release.apk
 
