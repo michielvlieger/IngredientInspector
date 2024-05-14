@@ -1,4 +1,4 @@
-name: Automated API integration tests using Postman CLI
+name: automatic eas build
 on:
   push:
       branches:
