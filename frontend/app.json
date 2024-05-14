@@ -25,7 +25,8 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "android.permission.CAMERA"
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
       ],
       "package": "com.anonymous.frontend"
     },
@@ -38,7 +39,9 @@
       "expo-router",
       [
         "@morrowdigital/watermelondb-expo-plugin",
-        { "disableJSI": true }
+        {
+          "disableJSI": true
+        }
       ],
       [
         "expo-build-properties",
@@ -58,10 +61,19 @@
         {
           "cameraPermission": "Allow IngredientInspector to access your camera"
         }
-      ]
+      ],
+      "@config-plugins/detox"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f358d00a-8142-4d6e-8cc4-10d56b1444c8"
+      }
     }
   }
 }

@@ -9,8 +9,6 @@ import { PermissionInfo } from '@/components/PermissionInfo'
 import { ScannerResult } from '@/components/ScannerResult'
 import axios, { AxiosPromise } from 'axios';
 import { AIResultInterface, IngredientsInterface, OpenfoodfactsIngredientInterface, ProductInterface } from '@interfaces/index.interface';
-import { Q } from '@nozbe/watermelondb'
-import { database } from '../database/database-setup';
 
 
 
@@ -214,6 +212,7 @@ export default function TabTwoScreen() {
           padding: 20,
         }}>
         <TouchableOpacity
+          testID="take-photo-button"
           onPress={takePicture}
           style={{
             width: 80,
