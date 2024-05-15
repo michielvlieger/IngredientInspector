@@ -1,4 +1,4 @@
-import { BoundingBoxInterface } from '@interfaces/index.interface';
+import { BoundingBoxInterface } from '@interfaces';
 
 export interface ProductInterface {
     id: string;

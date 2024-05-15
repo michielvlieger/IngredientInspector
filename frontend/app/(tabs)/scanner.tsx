@@ -2,14 +2,14 @@ import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import { Camera, CameraType, PermissionResponse } from 'expo-camera';
 import { useEffect, useState } from 'react';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
+import { Colors } from '@constants';
+import { useColorScheme } from 'components/useColorScheme';
 import { Image } from 'expo-image';
-import { Text } from '@/components/Themed';
-import { PermissionInfo } from '@/components/PermissionInfo'
-import { Product } from '@/components/Product'
+import { Text } from 'components/Themed';
+import { PermissionInfo } from 'components/PermissionInfo'
+import { Product } from 'components/Product'
 import axios, { AxiosPromise } from 'axios';
-import { AIResultInterface, ProductInterface, ScannerResultInterface } from '@interfaces/index.interface';
+import { AIResultInterface, ProductInterface, ScannerResultInterface } from '@interfaces';
 
 
 

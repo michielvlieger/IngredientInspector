@@ -1,7 +1,7 @@
 import { Collection } from '@nozbe/watermelondb';
-import { CategoriesModel } from '@models/index.model';
 import { database } from '../database-setup';
-import { CategoriesInterface, AuditableInterface } from '@/app/interfaces/index.interface';
+import { AuditableInterface, CategoriesInterface } from '@interfaces';
+import { CategoriesModel } from '@models';
 
 const seedCategories = async (): Promise<void> => {
   await database.write(async () => {

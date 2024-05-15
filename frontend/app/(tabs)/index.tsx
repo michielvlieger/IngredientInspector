@@ -1,30 +1,90 @@
-import { StyleSheet } from 'react-native';
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import CheckboxComponent from 'components/Checkbox';
+import { allCategoriesWithIngredientsWithCheckboxes, enableOrDisableAllCategoryIngredients, updateCheckboxStatusOfIngredient } from '@hooks';
+import HeaderComponent from 'components/Header';
+import { CheckboxInterface } from '@interfaces';
 
-export default function TabOneScreen() {
+
+
+const CheckboxContainer: React.FC = () => {
+  // Define 'items' as state so updates will cause the component to re-render.
+  const [items, setItems] = useState<{ id: string; label: string; checked: boolean; value: CheckboxInterface[]; }[] | null>(null);
+
+  useEffect(() => {
+    const getPreferenceItems = async () => {
+      try {
+        const response = await allCategoriesWithIngredientsWithCheckboxes();
+        setItems(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getPreferenceItems();
+  }, []);
+
+  // Loading screen for async code.
+  if (!items) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.centerText}>
+          Aan het laden...
+        </Text>
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+    <><View>
+      <HeaderComponent uri="https://i.imgur.com/yqWH29P.jpeg" />
     </View>
+      <View style={styles.container}>
+        {items.map((categoryWithIngredients, index) => (
+          <View key={`category-${index}`}>
+            <CheckboxComponent key={categoryWithIngredients.id}
+              id={categoryWithIngredients.id}
+              label={`Category: ${categoryWithIngredients.label}`}
+              checked={categoryWithIngredients.checked}
+              onValueChange={(newValue) => enableOrDisableAllCategoryIngredients(newValue)} />
+
+            <Text style={styles.categoryHeader}>{categoryWithIngredients.label}</Text>
+
+            {categoryWithIngredients.value.map((ingredient) => (
+              <CheckboxComponent key={ingredient.id}
+                id={ingredient.id}
+                label={ingredient.label}
+                checked={ingredient.checked}
+                onValueChange={(newValue) => updateCheckboxStatusOfIngredient(newValue)} />
+            ))}
+          </View>
+        ))}
+      </View></>
   );
-}
+};
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1, // Use flex to enable flexible box layout
+    justifyContent: 'center', // Center content vertically in the container
+    alignItems: 'center' // Center content horizontally
+  },
+  centerText: {
+    textAlign: 'center',
+    fontSize: 24,
+  },
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    margin: 24,
+    borderRadius: 4,
+    backgroundColor: '#fff',
+    padding: 12,
   },
-  title: {
-    fontSize: 20,
+  categoryHeader: {
     fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    fontSize: 16,
+    marginTop: 10,
+    marginBottom: 5,
   },
 });
+
+export default CheckboxContainer;
