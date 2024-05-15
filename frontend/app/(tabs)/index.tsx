@@ -42,13 +42,14 @@ const CheckboxContainer: React.FC = () => {
       <View style={styles.container}>
         {items.map((categoryWithIngredients, index) => (
           <View key={`category-${index}`}>
-            <CheckboxComponent key={categoryWithIngredients.id}
-              id={categoryWithIngredients.id}
-              label={`Category: ${categoryWithIngredients.label}`}
-              checked={categoryWithIngredients.checked}
-              onValueChange={(newValue) => enableOrDisableAllCategoryIngredients(newValue)} />
+            <View style={styles.row}>
+              <CheckboxComponent key={categoryWithIngredients.id}
+                id={categoryWithIngredients.id}
+                checked={categoryWithIngredients.checked}
+                onValueChange={(newValue) => enableOrDisableAllCategoryIngredients(newValue)} />
 
-            <Text style={styles.categoryHeader}>{categoryWithIngredients.label}</Text>
+              <Text style={styles.categoryHeader}>{categoryWithIngredients.label}</Text>
+            </View>
 
             {categoryWithIngredients.value.map((ingredient) => (
               <CheckboxComponent key={ingredient.id}
@@ -85,6 +86,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 5,
   },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'baseline',
+  }
 });
 
 export default CheckboxContainer;

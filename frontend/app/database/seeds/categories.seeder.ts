@@ -13,6 +13,16 @@ const seedCategories = async (): Promise<void> => {
         createdAt: Date.now(),
         updatedAt: Date.now(),
       },
+      {
+        name: "E-nummers",
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      },
+      {
+        name: "Allergiën",
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      },
     ];
 
     await Promise.all(seedData.map(async data => {
