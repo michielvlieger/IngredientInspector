@@ -1,4 +1,5 @@
 import { AuditableInterface, CategoriesInterface } from '@interfaces';
+import { IngredientsModel } from '@models';
 import { Model, Q } from '@nozbe/watermelondb';
 import { date, field, lazy } from '@nozbe/watermelondb/decorators';
 
@@ -6,7 +7,7 @@ class CategoriesModel extends Model implements AuditableInterface, CategoriesInt
   static readonly table = 'categories';
   static associations = {
     categories_has_ingredients: { type: 'has_many', foreignKey: 'category_id' }
-  } as const;  // Use 'as const' to ensure type literals are used.
+  } as const;
 
   @field('name') name!: string;
   @date('created_at') createdAt!: number;
@@ -14,7 +15,7 @@ class CategoriesModel extends Model implements AuditableInterface, CategoriesInt
 
   @lazy
   ingredients = this.collections
-    .get('ingredients')
+    .get<IngredientsModel>('ingredients')
     .query(Q.on('categories_has_ingredients', 'category_id', this.id));
 }
 

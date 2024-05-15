@@ -29,7 +29,7 @@ export default runAllSeeds;
  * Seed database. Temporarily enable if you need to seed your database.
  * "seeds": "ts-node --project ./tsconfig.json -e \"require('./app/database/seeds/index.seeds').runAllSeeds()\""
  * The above command does not work at the moment, needs adjusting.
- *
+*
  * TODO: make migrations table that stores each table name as a string upon seeding success.
  * Used for checking if seeding is necessary or not. That way, below function can stay enabled.
  */

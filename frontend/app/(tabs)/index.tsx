@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import CheckboxComponent from 'components/Checkbox';
-import { allCategoriesWithIngredientsWithCheckboxes, insertOrUpdateCategoryIngredientRelation } from '@hooks';
+import { allCategoriesWithIngredientsWithCheckboxes, updateCheckboxStatusOfIngredients } from '@hooks';
 import { IngredientsModel } from '@models';
 import HeaderComponent from 'components/Header';
 
@@ -50,7 +50,7 @@ const CheckboxContainer: React.FC = () => {
                 ingredientId={ingredient.id}
                 label={ingredient.label}
                 checked={ingredient.checked}
-                onValueChange={(newValue) => insertOrUpdateCategoryIngredientRelation(newValue)} />
+                onValueChange={(newValue) => updateCheckboxStatusOfIngredients(newValue)} />
             ))}
           </View>
         ))}
