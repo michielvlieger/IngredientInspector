@@ -11,7 +11,7 @@ const seedIngredients = async (): Promise<void> => {
     const seedData: (IngredientsInterface & AuditableInterface)[] = ingredients.map(ingredient => ({
       key: ingredient.key,  // This is used to identify the ingredient.
       name: ingredient.name,
-      checked: true,
+      checked: false,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     }));
