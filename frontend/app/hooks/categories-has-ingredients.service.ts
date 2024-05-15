@@ -7,20 +7,23 @@ import { database } from "app/database/database-setup";
 async function allCategoriesWithIngredientsWithCheckboxes() {
     const categoriesWithIngredients = await getAllCategoriesWithIngredients();
     const categoryHasIngredientsCollection = database.collections.get('categories_has_ingredients') as Collection<CategoriesHasIngredientsModel>;
-    const checked = true;
 
     return Promise.all(categoriesWithIngredients.map(async (categoryWithIngredients) => {
+        let categoryCheckbox = false;
+
         const ingredients = await Promise.all(categoryWithIngredients.ingredients.map(async (ingredient) => {
             const checkedRecords = await categoryHasIngredientsCollection.query(
                 Q.where('ingredient_id', ingredient.id)
             ).fetch();
 
+            // If one of the checkboxes inside of the category is enabled, then the category is enabled as well.
+            if (ingredient.checked && !categoryCheckbox) categoryCheckbox = true;
 
             return {
                 id: ingredient.id,
                 label: ingredient.name,
                 value: ingredient as IngredientsModel,
-                checked: checked,
+                checked: ingredient.checked,
             };
         }));
 
@@ -28,36 +31,26 @@ async function allCategoriesWithIngredientsWithCheckboxes() {
             id: categoryWithIngredients.id,
             label: categoryWithIngredients.name,
             value: ingredients,
-            checked: checked,
+            checked: categoryCheckbox,
         };
     }));
 }
 
 async function updateCheckboxStatusOfIngredients(newValue: CheckboxInterface) {
     await database.write(async () => {
-        const { ingredientId, checked } = newValue;
         const ingredientsCollection = database.collections.get('ingredients') as Collection<IngredientsModel>;
         const existingEntries = await ingredientsCollection.query(
-            Q.where('id', ingredientId)
+            Q.where('id', newValue.id)
         ).fetch();
 
         const now = Date.now();
 
-        if (existingEntries.length > 0) {
-            await database.batch(
-                ...existingEntries.map(entry => entry.prepareUpdate(() => {
-                    entry.updatedAt = now;
-                    entry.checked = checked;
-                }))
-            );
-        } else {
-            await ingredientsCollection.create(entry => {
-                entry.key = ingredientId;
-                entry.createdAt = now;
+        await database.batch(
+            ...existingEntries.map(entry => entry.prepareUpdate(() => {
                 entry.updatedAt = now;
-                entry.checked = checked;
-            });
-        }
+                entry.checked = newValue.checked;
+            }))
+        );
     });
 }
 export {

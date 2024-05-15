@@ -1,7 +1,6 @@
 export interface CheckboxInterface {
-  categoryId: string;         // Used to identify the checkbox (compound key).
-  ingredientId: string;         // Used to identify the checkbox (compound key).
-  label: string;      // Descriptive label for the checkbox.
+  id: string | number;  // Identifier of the checkbox item.
+  label?: string;      // Displayable label for the checkbox.
   checked: boolean;   // Boolean to represent if the checkbox is checked.
   onValueChange?: (event: CheckboxInterface) => void; // Function to handle changes in checkbox value (two-way binding).
 }

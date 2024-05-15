@@ -4,15 +4,16 @@ import CheckboxComponent from 'components/Checkbox';
 import { allCategoriesWithIngredientsWithCheckboxes, updateCheckboxStatusOfIngredients } from '@hooks';
 import { IngredientsModel } from '@models';
 import HeaderComponent from 'components/Header';
+import { CheckboxInterface } from '@interfaces';
 
 
 
 const CheckboxContainer: React.FC = () => {
   // Define 'items' as state so updates will cause the component to re-render.
-  const [items, setItems] = useState<{ id: string; label: string; value: { id: string; label: string; value: IngredientsModel; checked: boolean; }[]; checked: boolean; }[] | null>(null);
+  const [items, setItems] = useState<{ id: string; label: string; value: CheckboxInterface[]; }[] | null>(null);
 
   useEffect(() => {
-    const getItems = async () => {
+    const getPreferenceItems = async () => {
       try {
         const response = await allCategoriesWithIngredientsWithCheckboxes();
         setItems(response);
@@ -21,7 +22,7 @@ const CheckboxContainer: React.FC = () => {
       }
     }
 
-    getItems();
+    getPreferenceItems();
   }, []);
 
   // Loading screen for async code.
@@ -43,11 +44,9 @@ const CheckboxContainer: React.FC = () => {
         {items.map((categoryWithIngredients, index) => (
           <View key={`category-${index}`}>
             <Text style={styles.categoryHeader}>{categoryWithIngredients.label}</Text>
-            {categoryWithIngredients.value.map((ingredient, ingIndex) => (
-              <CheckboxComponent
-                key={`ingredient-${index}-${ingIndex}`}
-                categoryId={categoryWithIngredients.id}
-                ingredientId={ingredient.id}
+            {categoryWithIngredients.value.map((ingredient) => (
+              <CheckboxComponent key={ingredient.id}
+                id={ingredient.id}
                 label={ingredient.label}
                 checked={ingredient.checked}
                 onValueChange={(newValue) => updateCheckboxStatusOfIngredients(newValue)} />

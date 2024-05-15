@@ -5,5 +5,6 @@ export interface CategoriesHasIngredientsDTO {
         id: string;
         name: string;
         key: string;
+        checked: boolean;
     }[];
 }
