@@ -1,4 +1,4 @@
-import { allCategoriesWithIngredientsWithCheckboxes, enableOrDisableAllCategoryIngredients, updateCheckboxStatusOfIngredient } from "./categories-has-ingredients.service";
+import { allCategoriesWithIngredientsWithCheckboxes, enableOrDisableAllCategoryIngredients, updateCheckboxStatusOfIngredient } from "./categories-has-ingredients.hooks";
 
 export {
     allCategoriesWithIngredientsWithCheckboxes,
