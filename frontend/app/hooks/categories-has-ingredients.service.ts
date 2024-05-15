@@ -36,7 +36,7 @@ async function allCategoriesWithIngredientsWithCheckboxes() {
     }));
 }
 
-async function updateCheckboxStatusOfIngredients(newValue: CheckboxInterface) {
+async function updateCheckboxStatusOfIngredient(newValue: CheckboxInterface) {
     await database.write(async () => {
         const ingredientsCollection = database.collections.get('ingredients') as Collection<IngredientsModel>;
         const existingEntries = await ingredientsCollection.query(
@@ -53,7 +53,32 @@ async function updateCheckboxStatusOfIngredients(newValue: CheckboxInterface) {
         );
     });
 }
+
+async function enableOrDisableAllCategoryIngredients(newValue: CheckboxInterface) {
+    await database.write(async () => {
+        const categoryHasIngredients = database.collections.get<CategoriesHasIngredientsModel>('categories_has_ingredients');
+        const getAllIngredientsOfCategory = await categoryHasIngredients.query(Q.where('category_id', newValue.id)).fetch();
+        console.log(getAllIngredientsOfCategory);
+
+        for (const item of getAllIngredientsOfCategory) {
+            const ingredient = await item.ingredient.fetch();
+            console.log(ingredient.key)
+        }
+
+        const ingredients = await Promise.all<IngredientsModel>(getAllIngredientsOfCategory.map(item => item.ingredient.fetch()));
+
+        const now = Date.now();
+        await database.batch(
+            ...ingredients.map(entry => entry.prepareUpdate(() => {
+                entry.updatedAt = now;
+                entry.checked = newValue.checked;
+            }))
+        );
+    });
+}
+
 export {
     allCategoriesWithIngredientsWithCheckboxes,
-    updateCheckboxStatusOfIngredients,
+    updateCheckboxStatusOfIngredient,
+    enableOrDisableAllCategoryIngredients,
 }

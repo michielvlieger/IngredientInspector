@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import CheckboxComponent from 'components/Checkbox';
-import { allCategoriesWithIngredientsWithCheckboxes, updateCheckboxStatusOfIngredients } from '@hooks';
-import { IngredientsModel } from '@models';
+import { allCategoriesWithIngredientsWithCheckboxes, enableOrDisableAllCategoryIngredients, updateCheckboxStatusOfIngredient } from '@hooks';
 import HeaderComponent from 'components/Header';
 import { CheckboxInterface } from '@interfaces';
 
@@ -10,7 +9,7 @@ import { CheckboxInterface } from '@interfaces';
 
 const CheckboxContainer: React.FC = () => {
   // Define 'items' as state so updates will cause the component to re-render.
-  const [items, setItems] = useState<{ id: string; label: string; value: CheckboxInterface[]; }[] | null>(null);
+  const [items, setItems] = useState<{ id: string; label: string; checked: boolean; value: CheckboxInterface[]; }[] | null>(null);
 
   useEffect(() => {
     const getPreferenceItems = async () => {
@@ -43,13 +42,20 @@ const CheckboxContainer: React.FC = () => {
       <View style={styles.container}>
         {items.map((categoryWithIngredients, index) => (
           <View key={`category-${index}`}>
+            <CheckboxComponent key={categoryWithIngredients.id}
+              id={categoryWithIngredients.id}
+              label={`Category: ${categoryWithIngredients.label}`}
+              checked={categoryWithIngredients.checked}
+              onValueChange={(newValue) => enableOrDisableAllCategoryIngredients(newValue)} />
+
             <Text style={styles.categoryHeader}>{categoryWithIngredients.label}</Text>
+
             {categoryWithIngredients.value.map((ingredient) => (
               <CheckboxComponent key={ingredient.id}
                 id={ingredient.id}
                 label={ingredient.label}
                 checked={ingredient.checked}
-                onValueChange={(newValue) => updateCheckboxStatusOfIngredients(newValue)} />
+                onValueChange={(newValue) => updateCheckboxStatusOfIngredient(newValue)} />
             ))}
           </View>
         ))}
