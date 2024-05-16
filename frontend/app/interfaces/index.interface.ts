@@ -10,13 +10,13 @@ import { AIResultInterface } from "./ai-result.interface";
 import { ScannerResultInterface } from "./scanner-result.interface";
 import { ColorSchemeInterface } from "./color-scheme-interface";
 import { UsersInterface } from "./users.interface";
+import { UsersDTO } from "./users.dto";
 
 export {
     AuditableInterface,
     IngredientsInterface,
     CategoriesInterface,
     CheckboxInterface,
-    CategoriesHasIngredientsDTO,
     ScannerResultInterface,
     ProductInterface,
     AIResultInterface,
@@ -24,4 +24,6 @@ export {
     TagInterface,
     ColorSchemeInterface,
     UsersInterface,
+    CategoriesHasIngredientsDTO,
+    UsersDTO,
 }
