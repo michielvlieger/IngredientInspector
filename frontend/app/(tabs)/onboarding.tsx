@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { ONBOARDING_STEPS } from '@enums';
 import ButtonComponent from 'components/Button';
@@ -9,42 +9,51 @@ import HeaderComponent from 'components/Header';
 const { width } = Dimensions.get('window');
 
 interface OnboardingProps {
-  onComplete: () => void;
+  onComplete: (currentStep: ONBOARDING_STEPS) => void;
+  initialStep: ONBOARDING_STEPS;
 }
 
-const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
-  const [step, setStep] = useState<ONBOARDING_STEPS>(ONBOARDING_STEPS.STEP_1);
+const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
+  const [step, setStep] = useState<ONBOARDING_STEPS>(initialStep);
   const translateX = useSharedValue(0);
+
+  useEffect(() => {
+    setStep(initialStep);
+  }, [initialStep]);
+
+  const updateStep = (newStep: ONBOARDING_STEPS) => {
+    setStep(newStep);
+    onComplete(newStep);
+    translateX.value = withSpring(0);
+  };
 
   const nextStep = () => {
     switch (step) {
       case ONBOARDING_STEPS.STEP_1:
-        setStep(ONBOARDING_STEPS.STEP_2);
+        updateStep(ONBOARDING_STEPS.STEP_2);
         break;
       case ONBOARDING_STEPS.STEP_2:
-        setStep(ONBOARDING_STEPS.STEP_3);
+        updateStep(ONBOARDING_STEPS.STEP_3);
         break;
       case ONBOARDING_STEPS.STEP_3:
-        onComplete();
+        onComplete(ONBOARDING_STEPS.COMPLETED);
         break;
       default:
         break;
     }
-    translateX.value = withSpring(0);
   };
 
   const prevStep = () => {
     switch (step) {
       case ONBOARDING_STEPS.STEP_2:
-        setStep(ONBOARDING_STEPS.STEP_1);
+        updateStep(ONBOARDING_STEPS.STEP_1);
         break;
       case ONBOARDING_STEPS.STEP_3:
-        setStep(ONBOARDING_STEPS.STEP_2);
+        updateStep(ONBOARDING_STEPS.STEP_2);
         break;
       default:
         break;
     }
-    translateX.value = withSpring(0);
   };
 
   const gestureHandler = useAnimatedGestureHandler({
@@ -100,6 +109,8 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
             </Text>
           </View>
         );
+      default:
+        return null;
     }
   };
 

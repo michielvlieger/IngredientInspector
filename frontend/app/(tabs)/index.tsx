@@ -7,30 +7,32 @@ import { getAllUsers, updateOnboardingStatusInDatabase } from '@services';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import MainContent from 'components/MainContent';
 
-
-
 const Index: React.FC = () => {
     const [onboardingComplete, setOnboardingComplete] = useState<boolean | null>(null);
+    const [currentStep, setCurrentStep] = useState<ONBOARDING_STEPS>(ONBOARDING_STEPS.STEP_1);
 
     useEffect(() => {
         const fetchOnboardingStatus = async () => {
             const user = (await getAllUsers())[0];
-            setOnboardingComplete(user.onboarding === ONBOARDING_STEPS.COMPLETED);
+            const userStep = user.onboarding;
+            setOnboardingComplete(userStep === ONBOARDING_STEPS.COMPLETED);
+            setCurrentStep(userStep);
         };
 
         fetchOnboardingStatus();
     }, []);
 
-
-
-    const handleOnboardingComplete = async () => {
+    const handleOnboardingComplete = async (currentStep: ONBOARDING_STEPS) => {
         const user = (await getAllUsers())[0];
         if (!user?.id) {
             console.error("User ID is empty.");
             return;
         }
-        await updateOnboardingStatusInDatabase(user.id, ONBOARDING_STEPS.COMPLETED);
-        setOnboardingComplete(true);
+        await updateOnboardingStatusInDatabase(user.id, currentStep);
+        setCurrentStep(currentStep);
+        if (currentStep === ONBOARDING_STEPS.COMPLETED) {
+            setOnboardingComplete(true);
+        }
     };
 
     if (onboardingComplete === null) {
@@ -43,7 +45,7 @@ const Index: React.FC = () => {
                 {onboardingComplete ? (
                     <MainContent />
                 ) : (
-                    <Onboarding onComplete={handleOnboardingComplete} />
+                    <Onboarding onComplete={handleOnboardingComplete} initialStep={currentStep} />
                 )}
             </NavigationContainer>
         </GestureHandlerRootView>
