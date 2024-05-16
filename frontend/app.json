@@ -38,7 +38,9 @@
       "expo-router",
       [
         "@morrowdigital/watermelondb-expo-plugin",
-        { "disableJSI": true }
+        {
+          "disableJSI": true
+        }
       ],
       [
         "expo-build-properties",
@@ -58,7 +60,8 @@
         {
           "cameraPermission": "Allow IngredientInspector to access your camera"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
