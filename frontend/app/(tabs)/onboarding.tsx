@@ -56,6 +56,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
     }
   };
 
+  const skipOnboarding = () => {
+    onComplete(ONBOARDING_STEPS.COMPLETED);
+  };
+
   const gestureHandler = useAnimatedGestureHandler({
     onActive: (event) => {
       translateX.value = event.translationX;
@@ -117,6 +121,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
   return (
     <PanGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View style={[styles.wrapper, animatedStyle]}>
+        <ButtonComponent title="Overslaan" onPress={skipOnboarding} styleType="inline" />
         {renderStep()}
         <View style={styles.dotsContainer}>
           <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_1 && styles.activeDot]} />
@@ -124,7 +129,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
           <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_3 && styles.activeDot]} />
         </View>
         <View style={styles.continueButtonContainer}>
-          <ButtonComponent title={step === ONBOARDING_STEPS.STEP_3 ? 'Beginnen' : 'Verder'} onPress={nextStep} />
+          <ButtonComponent title={step === ONBOARDING_STEPS.STEP_3 ? 'Beginnen' : 'Verder'} onPress={nextStep} styleType="primary" />
         </View>
       </Animated.View>
     </PanGestureHandler>

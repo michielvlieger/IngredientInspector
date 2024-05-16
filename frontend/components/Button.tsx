@@ -1,13 +1,15 @@
-// ButtonComponent.tsx
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 interface ButtonProps {
   title: string;
   onPress: () => void;
+  styleType: 'primary' | 'inline';
 }
 
-const ButtonComponent: React.FC<ButtonProps> = ({ title, onPress }) => {
+const ButtonComponent: React.FC<ButtonProps> = ({ title, onPress, styleType }) => {
+  const styles = styleType === 'primary' ? primaryStyles : inlineStyles;
+
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <Text style={styles.buttonText}>{title}</Text>
@@ -15,7 +17,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({ title, onPress }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const primaryStyles = StyleSheet.create({
   button: {
     backgroundColor: '#000',
     paddingVertical: 16,
@@ -27,7 +29,27 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+  },
+});
+
+const inlineStyles = StyleSheet.create({
+  button: {
+    backgroundColor: 'transparent',
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    margin: 12,
+    marginEnd: -6,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.6)',
+    alignSelf: 'flex-end',
+  },
+
+  buttonText: {
+    color: 'rgba(0, 0, 0, 0.6)',
+    fontSize: 12,
+    textAlign: 'center',
   },
 });
 
