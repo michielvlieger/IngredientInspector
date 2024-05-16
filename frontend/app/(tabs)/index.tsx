@@ -87,7 +87,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   row: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'baseline',
   }
