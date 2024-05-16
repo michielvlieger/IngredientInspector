@@ -34,7 +34,10 @@ const Preferences: React.FC = () => {
   return (
     <>
       <View>
-        <HeaderComponent uri="https://i.imgur.com/yqWH29P.jpeg" />
+        <HeaderComponent
+          uri="https://i.imgur.com/yqWH29P.jpeg"
+          isHeader={true} // Indicating it's a header
+        />
       </View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {items.map((categoryWithIngredients, index) => (
@@ -96,7 +99,8 @@ const styles = StyleSheet.create({
     marginLeft: 36, // Add indentation to ingredients
   },
   backgroundWhite: {
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    borderRadius: 8,
   }
 });
 

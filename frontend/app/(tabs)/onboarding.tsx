@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Image, Text, StyleSheet, Dimensions } from 'react-native';
 import { ONBOARDING_STEPS } from '@enums';
 import ButtonComponent from 'components/Button';
 import { PanGestureHandler } from 'react-native-gesture-handler';
@@ -86,7 +86,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
       case ONBOARDING_STEPS.STEP_1:
         return (
           <View style={styles.container}>
-            <HeaderComponent uri="https://i.imgur.com/yqWH29P.jpeg" />
+            <HeaderComponent imageStyle={{ height: 100 }} uri='https://i.imgur.com/a3BKEBK.png'></HeaderComponent>
             <Text style={styles.title}>Vermijd ongewenste ingrediënten</Text>
             <Text style={styles.description}>
               Geef aan welke ingrediënten je wilt vermijden en wij speuren ze op in producten. Je voorkeuren zijn altijd aanpasbaar.
@@ -96,7 +96,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
       case ONBOARDING_STEPS.STEP_2:
         return (
           <View style={styles.container}>
-            <HeaderComponent uri="https://i.imgur.com/yqWH29P.jpeg" />
+            <HeaderComponent imageStyle={{ height: 100 }} uri='https://i.imgur.com/OHigjQm.png'></HeaderComponent>
             <Text style={styles.title}>Scan de productlabel voor snelle feedback</Text>
             <Text style={styles.description}>
               Richt je camera op de productlabel om snel en eenvoudig te zien of het product bij je dieetvoorkeur past.
@@ -106,7 +106,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
       case ONBOARDING_STEPS.STEP_3:
         return (
           <View style={styles.container}>
-            <HeaderComponent uri="https://i.imgur.com/yqWH29P.jpeg" />
+            <HeaderComponent
+              imageStyle={{ height: 100 }}
+              uri="https://i.imgur.com/EzxrEPg.png"
+            />
             <Text style={styles.title}>Laten we beginnen</Text>
             <Text style={styles.description}>
               Dit is Ingredient Inspector. Makkelijk hè? Druk op de knop zodra je klaar bent om je dieetvoorkeuren in te stellen.
@@ -119,20 +122,24 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
   };
 
   return (
-    <PanGestureHandler onGestureEvent={gestureHandler}>
-      <Animated.View style={[styles.wrapper, animatedStyle]}>
+    <View style={styles.wrapper}>
+      <View style={styles.skipButtonContainer}>
         <ButtonComponent title="Overslaan" onPress={skipOnboarding} styleType="inline" />
-        {renderStep()}
-        <View style={styles.dotsContainer}>
-          <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_1 && styles.activeDot]} />
-          <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_2 && styles.activeDot]} />
-          <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_3 && styles.activeDot]} />
-        </View>
-        <View style={styles.continueButtonContainer}>
-          <ButtonComponent title={step === ONBOARDING_STEPS.STEP_3 ? 'Beginnen' : 'Verder'} onPress={nextStep} styleType="primary" />
-        </View>
-      </Animated.View>
-    </PanGestureHandler>
+      </View>
+      <PanGestureHandler onGestureEvent={gestureHandler}>
+        <Animated.View style={[styles.animatedContainer, animatedStyle]}>
+          {renderStep()}
+        </Animated.View>
+      </PanGestureHandler>
+      <View style={styles.dotsContainer}>
+        <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_1 && styles.activeDot]} />
+        <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_2 && styles.activeDot]} />
+        <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_3 && styles.activeDot]} />
+      </View>
+      <View style={styles.continueButtonContainer}>
+        <ButtonComponent title={step === ONBOARDING_STEPS.STEP_3 ? 'Beginnen' : 'Verder'} onPress={nextStep} styleType="primary" />
+      </View>
+    </View>
   );
 };
 
@@ -143,12 +150,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
+  animatedContainer: {
+    flex: 1,
+    width: '100%',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: -100
+  },
+  image: {
+    width: 100,
+    height: 100,
   },
   title: {
+    marginTop: 24,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -175,7 +192,13 @@ const styles = StyleSheet.create({
   continueButtonContainer: {
     width: '90%',
     margin: 24,
-  }
+  },
+  skipButtonContainer: {
+    position: 'absolute',
+    top: 24,
+    right: 24,
+    zIndex: 1,  // Ensure the skip button is on top
+  },
 });
 
 export default Onboarding;
