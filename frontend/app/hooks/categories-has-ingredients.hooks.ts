@@ -6,16 +6,11 @@ import { database } from "app/database/database-setup";
 
 async function allCategoriesWithIngredientsWithCheckboxes() {
     const categoriesWithIngredients = await getAllCategoriesWithIngredients();
-    const categoryHasIngredientsCollection = database.collections.get('categories_has_ingredients') as Collection<CategoriesHasIngredientsModel>;
 
     return Promise.all(categoriesWithIngredients.map(async (categoryWithIngredients) => {
         let categoryCheckbox = false;
 
         const ingredients = await Promise.all(categoryWithIngredients.ingredients.map(async (ingredient) => {
-            const checkedRecords = await categoryHasIngredientsCollection.query(
-                Q.where('ingredient_id', ingredient.id)
-            ).fetch();
-
             // If one of the checkboxes inside of the category is enabled, then the category is enabled as well.
             if (ingredient.checked && !categoryCheckbox) categoryCheckbox = true;
 

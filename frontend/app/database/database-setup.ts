@@ -12,7 +12,7 @@ const adapter = new SQLiteAdapter({
      * Increment the version number every time the database changes. If this is not done then the changes are not reflected.
      * If no migration strategy is implemented, then it will reset the database in it's entirety.
      */
-    version: 1,
+    version: 2,
     tables: [
       ingredientsSchema,
       categoriesSchema,

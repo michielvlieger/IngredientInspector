@@ -1,4 +1,4 @@
-import { ProductInterface } from '@interfaces/index.interface';
+import { ProductInterface } from "@interfaces";
 
 export interface ScannerResultInterface {
     photoUri: string;
