@@ -10,7 +10,6 @@ const CheckboxComponent: React.FC<CheckboxInterface> = ({ id, label, checked, on
   const handleValueChange = (newCheckedValue: boolean) => {
     setChecked(newCheckedValue);
 
-
     if (onValueChange) {
       const newValue: CheckboxInterface = {
         id: id,
@@ -29,7 +28,7 @@ const CheckboxComponent: React.FC<CheckboxInterface> = ({ id, label, checked, on
         color={isChecked ? colors.primary : undefined}
         accessibilityLabel="Checkbox Label"
       />
-      <Text style={styles.paragraph}>{label}</Text>
+      <Text>{label}</Text>
     </View>
   );
 };
@@ -38,15 +37,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 10,
-  },
-  paragraph: {
-    fontSize: 15,
-    color: '#000',
+    paddingVertical: 12,
   },
   checkbox: {
-    margin: 8,
+    marginRight: 12,
   },
 });
 
