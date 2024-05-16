@@ -9,6 +9,7 @@ import { BoundingBoxInterface } from "./bounding-box.interface";
 import { AIResultInterface } from "./ai-result.interface";
 import { ScannerResultInterface } from "./scanner-result.interface";
 import { ColorSchemeInterface } from "./color-scheme-interface";
+import { UsersInterface } from "./users.interface";
 
 export {
     AuditableInterface,
@@ -22,4 +23,5 @@ export {
     BoundingBoxInterface,
     TagInterface,
     ColorSchemeInterface,
+    UsersInterface,
 }
