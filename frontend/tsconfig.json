@@ -29,6 +29,9 @@
       ],
       "@seeds": [
         "app/database/seeds/index.seeds.ts"
+      ],
+      "@enums": [
+        "app/enums/index.enums.ts"
       ]
     }
   },

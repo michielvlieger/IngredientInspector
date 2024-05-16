@@ -1,5 +1,5 @@
+import { ONBOARDING_STEPS } from "@enums";
+
 export interface UsersInterface {
-    onboarding: string;
-    createdAt: number;
-    updatedAt: number;
+    onboarding: ONBOARDING_STEPS;
 }

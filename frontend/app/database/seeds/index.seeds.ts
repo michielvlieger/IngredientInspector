@@ -1,6 +1,7 @@
 import seedCategoriesHasIngredients from "./categories-has-ingredients.seeder";
 import seedCategories from "./categories.seeder";
 import seedIngredients from "./ingredients.seeder";
+import seedUsers from "./users.seeder";
 
 async function runAllSeeds() {
     try {
@@ -14,6 +15,10 @@ async function runAllSeeds() {
 
         console.info('Seeding categories_has_ingredients...');
         await seedCategoriesHasIngredients();
+        console.info('Categories_has_ingredients seeded.');
+
+        console.info('Seeding users...');
+        await seedUsers();
         console.info('Categories_has_ingredients seeded.');
 
         console.info('Completed seeding database.');
