@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { ONBOARDING_STEPS } from '@enums';
 import ButtonComponent from 'components/Button';
 import { PanGestureHandler } from 'react-native-gesture-handler';

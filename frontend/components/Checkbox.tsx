@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { colors } from '@styles';
@@ -6,6 +6,10 @@ import { CheckboxInterface } from '@interfaces';
 
 const CheckboxComponent: React.FC<CheckboxInterface> = ({ id, label, checked, onValueChange }) => {
   const [isChecked, setChecked] = useState(checked);
+
+  useEffect(() => {
+    setChecked(checked);
+  }, [checked]);
 
   const handleValueChange = (newCheckedValue: boolean) => {
     setChecked(newCheckedValue);
