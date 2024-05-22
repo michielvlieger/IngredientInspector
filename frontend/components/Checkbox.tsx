@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { colors } from '@styles';
@@ -7,9 +7,12 @@ import { CheckboxInterface } from '@interfaces';
 const CheckboxComponent: React.FC<CheckboxInterface> = ({ id, label, checked, onValueChange }) => {
   const [isChecked, setChecked] = useState(checked);
 
+  useEffect(() => {
+    setChecked(checked);
+  }, [checked]);
+
   const handleValueChange = (newCheckedValue: boolean) => {
     setChecked(newCheckedValue);
-
 
     if (onValueChange) {
       const newValue: CheckboxInterface = {
@@ -29,7 +32,7 @@ const CheckboxComponent: React.FC<CheckboxInterface> = ({ id, label, checked, on
         color={isChecked ? colors.primary : undefined}
         accessibilityLabel="Checkbox Label"
       />
-      <Text style={styles.paragraph}>{label}</Text>
+      <Text>{label}</Text>
     </View>
   );
 };
@@ -38,15 +41,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 10,
-  },
-  paragraph: {
-    fontSize: 15,
-    color: '#000',
+    paddingVertical: 12,
   },
   checkbox: {
-    margin: 8,
+    marginRight: 12,
   },
 });
 

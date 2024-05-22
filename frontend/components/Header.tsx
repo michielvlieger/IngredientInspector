@@ -1,37 +1,38 @@
-import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import { SvgUri } from 'react-native-svg';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Image, ImageStyle, ViewStyle, Dimensions } from 'react-native';
 
-const HeaderComponent: React.FC<{ uri: string }> = ({ uri }) => {
-    /**
-     * NOTE:
-     * Using a relative path with SvgUri to load local SVG files will not work because SvgUri expects a URI that points to a network resource. This is a common misunderstanding, especially when transitioning from web development to mobile development with React Native.
-     * For local SVG files in a React Native project, you should use a different approach. Here are the options you can consider:
-     * 
-     * Option 1: Using react-native-svg Components Directly:
-     * If you are dealing with static SVG files, the best practice is to convert them into React components using tools like react-native-svg-transformer. This allows you to import SVG files directly into your React Native components as if they were React components.
-     * 
-     * Option 2: Remote URL:
-     * If you still want to use SvgUri for some reason, such as when the SVG files are dynamic and hosted on a server, you should use a full HTTP or HTTPS URL.
-     */
+interface HeaderComponentProps {
+    uri: string;
+    headerStyle?: ViewStyle;
+    imageStyle?: ImageStyle;
+    isHeader?: boolean; // New prop to indicate if the image is a header
+}
 
-    // Determine if the URI is for an SVG file. It is not possible to statically load SVGs unless they are loaded as a component like 
-    const isSvg = uri.toLowerCase().endsWith('.svg');
+const HeaderComponent: React.FC<HeaderComponentProps> = ({ uri, headerStyle, imageStyle, isHeader }) => {
+    const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
+
+    useEffect(() => {
+        Image.getSize(uri, (width, height) => {
+            if (isHeader) {
+                const aspectRatio = width / height;
+                setImageDimensions({ width: Dimensions.get('window').width, height: Dimensions.get('window').width / aspectRatio });
+            } else {
+                const aspectRatio = width / height;
+                setImageDimensions({ width: 100 * aspectRatio, height: 100 });
+            }
+        });
+    }, [uri, isHeader]);
 
     return (
-        <View style={styles.header}>
-            {isSvg ? (
-                <SvgUri
-                    width="100%"
-                    height="200"
-                    uri={uri}
-                    onError={(e) => console.error('Failed to load SVG:', e)}
-                />
-            ) : (
+        <View style={[styles.header, isHeader && styles.headerFullWidth, headerStyle]}>
+            {imageDimensions.width > 0 && (
                 <Image
-                    style={{ width: '100%', height: 200 }}
-                    source={{ uri: uri }}
-                    onError={(e) => console.error('Failed to load image:', e.nativeEvent.error)}
+                    style={[
+                        isHeader ? { width: imageDimensions.width, height: imageDimensions.height } : { width: imageDimensions.width, height: imageDimensions.height },
+                        imageStyle
+                    ]}
+                    source={{ uri }}
+                    resizeMode={isHeader ? "cover" : "contain"}
                 />
             )}
         </View>
@@ -40,9 +41,17 @@ const HeaderComponent: React.FC<{ uri: string }> = ({ uri }) => {
 
 const styles = StyleSheet.create({
     header: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f0f0f0',
         width: '100%',
-        height: 200,
-    }
+    },
+    headerFullWidth: {
+        height: 200, // Adjust height as needed for full-width headers
+    },
+    image: {
+        height: 100,
+    },
 });
 
 export default HeaderComponent;
