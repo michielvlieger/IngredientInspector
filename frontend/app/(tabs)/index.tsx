@@ -1,30 +1,55 @@
-import { StyleSheet } from 'react-native';
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+import React, { useState, useEffect } from 'react';
+import { ActivityIndicator } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { ONBOARDING_STEPS } from '@enums';
+import Onboarding from './onboarding';
+import { getAllUsers, updateOnboardingStatusInDatabase } from '@services';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import MainContent from 'components/MainContent';
 
-export default function TabOneScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-    </View>
-  );
-}
+const Index: React.FC = () => {
+    const [onboardingComplete, setOnboardingComplete] = useState<boolean | null>(null);
+    const [currentStep, setCurrentStep] = useState<ONBOARDING_STEPS>(ONBOARDING_STEPS.STEP_1);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+    useEffect(() => {
+        const fetchOnboardingStatus = async () => {
+            const user = (await getAllUsers())[0];
+            const userStep = user.onboarding;
+            setOnboardingComplete(userStep === ONBOARDING_STEPS.COMPLETED);
+            setCurrentStep(userStep);
+        };
+
+        fetchOnboardingStatus();
+    }, []);
+
+    const handleOnboardingComplete = async (currentStep: ONBOARDING_STEPS) => {
+        const user = (await getAllUsers())[0];
+        if (!user?.id) {
+            console.error("User ID is empty.");
+            return;
+        }
+        await updateOnboardingStatusInDatabase(user.id, currentStep);
+        setCurrentStep(currentStep);
+        if (currentStep === ONBOARDING_STEPS.COMPLETED) {
+            setOnboardingComplete(true);
+        }
+    };
+
+    if (onboardingComplete === null) {
+        return <ActivityIndicator size="large" />;
+    }
+
+    return (
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <NavigationContainer independent={true}>
+                {onboardingComplete ? (
+                    <MainContent />
+                ) : (
+                    <Onboarding onComplete={handleOnboardingComplete} initialStep={currentStep} />
+                )}
+            </NavigationContainer>
+        </GestureHandlerRootView>
+    );
+};
+
+export default Index;

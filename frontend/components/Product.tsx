@@ -1,4 +1,4 @@
-import { ProductInterface, ColorSchemeInterface } from '@interfaces/index.interface';
+import { ColorSchemeInterface, ProductInterface } from '@interfaces';
 import { Image } from 'expo-image';
 import { Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
@@ -41,7 +41,7 @@ export function Product({ product, colorScheme }: Props) {
                         color: colorScheme?.text,
                         fontSize: 22,
                         fontWeight: '700',
-                }}>{product.brand}</Text>
+                    }}>{product.brand}</Text>
                 </View>
                 <Text style={{
                     color: colorScheme?.text,

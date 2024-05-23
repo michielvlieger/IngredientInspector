@@ -42,6 +42,9 @@
         {
           "disableJSI": true
         }
+        {
+          "disableJSI": true
+        }
       ],
       [
         "expo-build-properties",
@@ -67,7 +70,8 @@
         {
           "subdomains": "*"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

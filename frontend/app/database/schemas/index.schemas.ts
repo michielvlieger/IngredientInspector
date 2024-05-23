@@ -1,11 +1,11 @@
 import categoriesHasIngredientsSchema from "./categories-has-ingredients.schema";
 import categoriesSchema from "./categories.schema";
 import ingredientsSchema from "./ingredients.schema";
-import preferencesSchema from "./preferences.schema";
+import usersSchema from "./users.schema";
 
-export {
-    preferencesSchema,
+export const schemas = [
     ingredientsSchema,
     categoriesSchema,
     categoriesHasIngredientsSchema,
-}
+    usersSchema,
+]

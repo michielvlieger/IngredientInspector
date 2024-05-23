@@ -1,16 +1,17 @@
 import { Collection } from '@nozbe/watermelondb';
-import { AuditableInterface, IngredientsInterface } from '@interfaces/index.interface';
-import { IngredientsModel } from '@models/index.model';
 import { database } from '../database-setup';
 import ingredients from './data/ingredients.json';
+import { IngredientsModel } from '@models';
+import { AuditableInterface, IngredientsInterface } from '@interfaces';
 
 const seedIngredients = async (): Promise<void> => {
   await database.write(async () => {
     const ingredientCollection: Collection<IngredientsModel> = database.collections.get('ingredients');
 
     const seedData: (IngredientsInterface & AuditableInterface)[] = ingredients.map(ingredient => ({
-      key: ingredient.key,
+      key: ingredient.key,  // This is used to identify the ingredient.
       name: ingredient.name,
+      checked: false,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     }));
@@ -19,6 +20,7 @@ const seedIngredients = async (): Promise<void> => {
       await ingredientCollection.create(entry => {
         entry.key = data.key;
         entry.name = data.name;
+        entry.checked = data.checked;
         entry.createdAt = data.createdAt;
         entry.updatedAt = data.updatedAt;
       });

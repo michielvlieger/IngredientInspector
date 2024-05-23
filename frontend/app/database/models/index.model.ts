@@ -1,11 +1,20 @@
 import CategoriesModel from "./categories.model";
 import CategoriesHasIngredientsModel from "./categories-has-ingredients.model";
 import IngredientsModel from "./ingredients.model";
-import PreferencesModel from "./preferences.model";
+import UsersModel from "./users.model";
 
-export {
-    PreferencesModel,
+// Array of models for enumeration.
+export const models = [
     IngredientsModel,
     CategoriesModel,
     CategoriesHasIngredientsModel,
+    UsersModel,
+]
+
+// Named exports for destructuring.
+export {
+    IngredientsModel,
+    CategoriesModel,
+    CategoriesHasIngredientsModel,
+    UsersModel,
 }
