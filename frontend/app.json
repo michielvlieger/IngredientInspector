@@ -62,7 +62,12 @@
           "cameraPermission": "Allow IngredientInspector to access your camera"
         }
       ],
-      "@config-plugins/detox"
+      [
+        "@config-plugins/detox",
+        {
+          "subdomains": "*"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
