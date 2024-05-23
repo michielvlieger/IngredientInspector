@@ -42,9 +42,6 @@
         {
           "disableJSI": true
         }
-        {
-          "disableJSI": true
-        }
       ],
       [
         "expo-build-properties",
