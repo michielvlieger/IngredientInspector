@@ -1,5 +1,5 @@
-import { ProductInterface, ColorSchemeInterface } from '@interfaces/index.interface';
-import { Product } from '@/components/Product'
+import { ProductInterface, ColorSchemeInterface } from '@interfaces';
+import { Product } from "./Product";
 import { Text, View } from './Themed';
 
 type Props = {

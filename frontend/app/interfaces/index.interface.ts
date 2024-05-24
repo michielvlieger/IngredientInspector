@@ -1,6 +1,5 @@
 import { AuditableInterface } from "./auditable.interface";
 import { CategoriesInterface } from "./categories.interface";
-import { IngredientsInterface } from "./ingredients.interface";
 import { CheckboxInterface } from "./checkbox-interface";
 import { CategoriesHasIngredientsDTO } from "./categories-has-ingredients.dto";
 import { TagInterface } from "./tag.interface";
@@ -11,13 +10,14 @@ import { ColorSchemeInterface } from "./color-scheme.interface";
 import { OpenfoodfactsIngredientInterface } from "./openfoodfacts-ingredient.interface";
 import { UsersInterface } from "./users.interface";
 import { UsersDTO } from "./users.dto";
+import { IngredientsDTO } from "./ingredients.dto";
+import { IngredientsInterface } from "./ingredients.interface";
 
 export {
     AuditableInterface,
-    IngredientsInterface,
     CategoriesInterface,
+    IngredientsInterface,
     CheckboxInterface,
-    ScannerResultInterface,
     ProductInterface,
     AIResultInterface,
     BoundingBoxInterface,
@@ -27,4 +27,5 @@ export {
     OpenfoodfactsIngredientInterface,
     CategoriesHasIngredientsDTO,
     UsersDTO,
+    IngredientsDTO,
 }

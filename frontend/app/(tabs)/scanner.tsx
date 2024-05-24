@@ -1,14 +1,14 @@
-import { Platform, ScrollView, TouchableOpacity, useColorScheme } from 'react-native';
+import { Platform, ScrollView, TouchableOpacity, useColorScheme, View } from 'react-native';
 import { Camera, CameraType, PermissionResponse } from 'expo-camera';
 import { useEffect, useState } from 'react';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import Colors from '@/constants/Colors';
+import { Colors } from '@constants';
 import { Image } from 'expo-image';
-import { View } from '@/components/Themed';
-import { PermissionInfo } from '@/components/PermissionInfo'
-import { ScannerResult } from '@/components/ScannerResult'
+import { PermissionInfo } from 'components/PermissionInfo'
+import { ScannerResult } from 'components/ScannerResult'
 import axios, { AxiosPromise } from 'axios';
-import { AIResultInterface, IngredientsInterface, OpenfoodfactsIngredientInterface, ProductInterface } from '@interfaces/index.interface';
+import { AIResultInterface, IngredientsDTO, OpenfoodfactsIngredientInterface, ProductInterface } from '@interfaces';
+import { getIngredientByKey } from '@services';
 
 
 
@@ -26,63 +26,65 @@ export default function TabTwoScreen() {
   }, []);
 
   const getIngredients = (ingredients: OpenfoodfactsIngredientInterface[]) => {
-    let ingredientArr: IngredientsInterface[] = []
+    let ingredientArr: IngredientsDTO[] = []
     ingredients.forEach((ingredient: OpenfoodfactsIngredientInterface) => {
       if ('ingredients' in ingredient && ingredient.ingredients) {
         ingredientArr = ingredientArr.concat(getIngredients(ingredient.ingredients))
       } else {
-        ingredientArr.push({ key: ingredient.id, name: ingredient.text });
+        const dbingredient = getIngredientByKey(ingredient.id);
+        console.log(dbingredient);
+        ingredientArr.push({ key: ingredient.id, name: ingredient.text, checked: false });
       };
     });
     return ingredientArr
   }
 
-  //   const createAIRun = async (photoUri: string, runName: string) => {
-  //     const localUri = Platform.OS === 'ios' ? photoUri.replace('file://', '') : photoUri;
-  //     const response = await fetch(localUri);
-  //     const photoBlob = await response.blob();
-  //     const arrayBuffer = await new Response(photoBlob).arrayBuffer();
-  //     await axios.put(`https://iicomputervision.cognitiveservices.azure.com/computervision/productrecognition/aimodel/runs/${runName}?api-version=2023-04-01-preview`,
-  //       arrayBuffer,
-  //       {
-  //         headers: { 'Ocp-Apim-Subscription-Key': '981d6f4220b94493a24b83e7d916a8b7', 'Content-Type': 'image/jpg' },
-  //         maxBodyLength: Infinity,
-  //         maxContentLength: Infinity,
-  //       }).catch(error => {
-  //         console.error(error);
-  //       });
-  //   }
+  const createAIRun = async (photoUri: string, runName: string) => {
+    const localUri = Platform.OS === 'ios' ? photoUri.replace('file://', '') : photoUri;
+    const response = await fetch(localUri);
+    const photoBlob = await response.blob();
+    const arrayBuffer = await new Response(photoBlob).arrayBuffer();
+    await axios.put(`https://iicomputervision.cognitiveservices.azure.com/computervision/productrecognition/aimodel/runs/${runName}?api-version=2023-04-01-preview`,
+      arrayBuffer,
+      {
+        headers: { 'Ocp-Apim-Subscription-Key': '981d6f4220b94493a24b83e7d916a8b7', 'Content-Type': 'image/jpg' },
+        maxBodyLength: Infinity,
+        maxContentLength: Infinity,
+      }).catch(error => {
+        console.error(error);
+      });
+  }
 
-  //   const readAIRun = async (runName: string): Promise<AIResultInterface[]> => {
-  //     return new Promise((resolve, reject) => {
-  //       let i = 0;
-  //       /**
-  //        * TODO: use websockets or while loop with timeout
-  //        * Doesn't await the response of request before going to next interval
-  //        */
-  //       const intervalId = setInterval(async () => {
-  //         if (i > 5) reject();
+  const readAIRun = async (runName: string): Promise<AIResultInterface[]> => {
+    return new Promise((resolve, reject) => {
+      let i = 0;
+      /**
+       * TODO: use websockets or while loop with timeout
+       * Doesn't await the response of request before going to next interval
+       */
+      const intervalId = setInterval(async () => {
+        if (i > 5) reject();
 
-  //         await axios.get(`https://iicomputervision.cognitiveservices.azure.com/computervision/productrecognition/aimodel/runs/${runName}?api-version=2023-04-01-preview`,
-  //           { headers: { 'Ocp-Apim-Subscription-Key': '981d6f4220b94493a24b83e7d916a8b7', 'Content-Type': 'application/json' } }).then(response => {
-  //             if (response.data.status === 'succeeded') {
-  //               resolve(response.data.result.products);
-  //               clearInterval(intervalId);
-  //             }
-  //           }).catch(error => {
-  //             console.error(error);
-  //           });
+        await axios.get(`https://iicomputervision.cognitiveservices.azure.com/computervision/productrecognition/aimodel/runs/${runName}?api-version=2023-04-01-preview`,
+          { headers: { 'Ocp-Apim-Subscription-Key': '981d6f4220b94493a24b83e7d916a8b7', 'Content-Type': 'application/json' } }).then(response => {
+            if (response.data.status === 'succeeded') {
+              resolve(response.data.result.products);
+              clearInterval(intervalId);
+            }
+          }).catch(error => {
+            console.error(error);
+          });
 
-  //         i++;
-  //       }, 2000);
-  //     })
-  //   }
+        i++;
+      }, 2000);
+    })
+  }
 
-  //   const scanPhoto = async (photoUri: string) => {
-  //     const runName = Date.now().toString();
+  const scanPhoto = async (photoUri: string) => {
+    const runName = Date.now().toString();
 
-  //     await createAIRun(photoUri, runName);
-  //     const aiResults = await readAIRun(runName);
+    await createAIRun(photoUri, runName);
+    const aiResults = await readAIRun(runName);
 
   const productArr: ProductInterface[] = [];
   const promises: AxiosPromise[] = [];
@@ -99,7 +101,6 @@ export default function TabTwoScreen() {
           brand: '',
           boundingBoxes: [],
           ingredients: [],
-          isOkayForUser: false,
         };
         newProduct.boundingBoxes.push(aiResult.boundingBox);
         productArr.push(newProduct);
@@ -116,22 +117,13 @@ export default function TabTwoScreen() {
       productArr[productIndex].image = response.data.product.image_front_small_url;
       if ('ingredients' in response.data.product) {
         productArr[productIndex].ingredients = getIngredients(response.data.product.ingredients);
-        /**
-         * TODO: find ingredients that the user doesn't want and look if it is in productArr[productIndex].ingredients
-         * 
-         * temperarily giving random value
-         */
-        // const badIngredients = await database.get('ingredients').query(
-        //   Q.where('toggled', true)
-        // ).fetch();
-        productArr[productIndex].isOkayForUser = Math.random() < 0.5;
       }
 
     });
   }).catch(error => console.error(error));
 
-  //     return productArr;
-  //   }
+    return productArr;
+  }
 
   let cameraRef: Camera | null;
   const takePicture = async () => {
@@ -147,11 +139,11 @@ export default function TabTwoScreen() {
     setScannerResult(scannedProducts)
   }
 
-  //   if (!hasCameraPermission) {
-  //     return <PermissionInfo text='Toestemming aan het laden...' colorScheme={colorScheme} />
-  //   } else if (!hasCameraPermission.status) {
-  //     return <PermissionInfo text='Zet uw camerapermissie aan in uw instellingen.' colorScheme={colorScheme} />
-  //   }
+  if (!hasCameraPermission) {
+    return <PermissionInfo text='Toestemming aan het laden...' colorScheme={colorScheme} />
+  } else if (!hasCameraPermission.status) {
+    return <PermissionInfo text='Zet uw camerapermissie aan in uw instellingen.' colorScheme={colorScheme} />
+  }
 
   if (photoUri) {
     return (

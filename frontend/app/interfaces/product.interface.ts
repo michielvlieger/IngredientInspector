@@ -1,4 +1,4 @@
-import { BoundingBoxInterface, IngredientsInterface } from '@interfaces/index.interface';
+import { BoundingBoxInterface, IngredientsDTO } from '@interfaces';
 
 export interface ProductInterface {
     id: string;
@@ -6,6 +6,5 @@ export interface ProductInterface {
     name: string;
     brand: string;
     boundingBoxes: BoundingBoxInterface[];
-    ingredients: IngredientsInterface[];
-    isOkayForUser: boolean;
+    ingredients: IngredientsDTO[];
 }
