@@ -1,4 +1,4 @@
-import { BoundingBoxInterface, TagInterface, } from '@interfaces/index.interface';
+import { BoundingBoxInterface, TagInterface, } from '@interfaces';
 
 export interface AIResultInterface {
     id: string;

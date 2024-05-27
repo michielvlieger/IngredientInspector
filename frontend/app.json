@@ -61,10 +61,24 @@
           "cameraPermission": "Allow IngredientInspector to access your camera"
         }
       ],
+      [
+        "@config-plugins/detox",
+        {
+          "subdomains": "*"
+        }
+      ],
       "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f358d00a-8142-4d6e-8cc4-10d56b1444c8"
+      }
     }
   }
 }

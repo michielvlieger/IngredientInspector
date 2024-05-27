@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Preferences from 'app/(tabs)/preferences';
+import Scanner from 'app/(tabs)/scanner';
 import { FontAwesome } from '@expo/vector-icons';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '@styles';
@@ -35,8 +36,13 @@ const MainContent: React.FC = () => {
                 }}
             />
 
-            {/* Uncomment the following line when the scanner is enabled */}
-            {/* <Tab.Screen name="Scanner" component={Scanner} /> */}
+            <Tab.Screen name="Scanner" component={Scanner} options={{
+                headerShown: false,
+                tabBarIcon: ({ color, size }) => (
+                    <FontAwesome name="camera" color={color} size={size} />
+                ), // Add the preference icon here
+                tabBarLabel: () => <CustomTabBarLabel title="Scanner" />,
+            }} />
         </Tab.Navigator>
     );
 };

@@ -1,6 +1,8 @@
 import { ColorSchemeInterface, ProductInterface } from '@interfaces';
 import { Image } from 'expo-image';
 import { Text, View } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+
 
 type Props = {
     product: ProductInterface;
@@ -8,6 +10,10 @@ type Props = {
 };
 
 export function Product({ product, colorScheme }: Props) {
+    let isOkayForUser = true;
+    product.ingredients.forEach(ingredient => {
+        if (ingredient.checked) isOkayForUser = false
+    })
     return (
         <View style={{
             flexDirection: 'row',
@@ -29,12 +35,18 @@ export function Product({ product, colorScheme }: Props) {
                         flex: 1
                     }} />
             </View>
-            <View style={{ flexDirection: 'column', flex: 1 }}>
-                <Text style={{
-                    color: colorScheme?.text,
-                    fontSize: 20,
-                    fontWeight: '700'
-                }}>{product.brand}</Text>
+            <View style={{ flexDirection: 'column', flex: 1, paddingVertical: 5 }}>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: "center"
+                }}>
+                    {isOkayForUser ? <AntDesign name="checkcircle" size={24} color="green" style={{ marginRight: 8 }} /> : <AntDesign name="closecircle" size={24} color="red" style={{ marginRight: 8 }} />}
+                    <Text style={{
+                        color: colorScheme?.text,
+                        fontSize: 22,
+                        fontWeight: '700',
+                    }}>{product.brand}</Text>
+                </View>
                 <Text style={{
                     color: colorScheme?.text,
                     fontSize: 15,
