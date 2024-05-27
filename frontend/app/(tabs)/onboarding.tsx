@@ -62,7 +62,11 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
 
   const gestureHandler = useAnimatedGestureHandler({
     onActive: (event) => {
-      translateX.value = event.translationX;
+      if (step === ONBOARDING_STEPS.STEP_1 && event.translationX > 0) {
+        translateX.value = 0;  // Prevent swiping right on the first step
+      } else {
+        translateX.value = event.translationX;
+      }
     },
     onEnd: (event) => {
       if (event.translationX > width * 0.25) {
