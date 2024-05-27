@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, ImageStyle, ViewStyle, Dimensions } from 'react-native';
+import { View, StyleSheet, Image, ImageStyle, ViewStyle, Dimensions, useColorScheme } from 'react-native';
+import { Colors } from '@constants';
 
 interface HeaderComponentProps {
     uri: string;
@@ -9,26 +10,26 @@ interface HeaderComponentProps {
 }
 
 const HeaderComponent: React.FC<HeaderComponentProps> = ({ uri, headerStyle, imageStyle, isHeader }) => {
+    const colorScheme = Colors[useColorScheme() ?? 'light'];
     const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
 
     useEffect(() => {
         Image.getSize(uri, (width, height) => {
+            const aspectRatio = width / height;
             if (isHeader) {
-                const aspectRatio = width / height;
                 setImageDimensions({ width: Dimensions.get('window').width, height: Dimensions.get('window').width / aspectRatio });
             } else {
-                const aspectRatio = width / height;
                 setImageDimensions({ width: 100 * aspectRatio, height: 100 });
             }
         });
     }, [uri, isHeader]);
 
     return (
-        <View style={[styles.header, isHeader && styles.headerFullWidth, headerStyle]}>
+        <View style={[styles.header, isHeader && styles.headerFullWidth, { backgroundColor: colorScheme.background }, headerStyle]}>
             {imageDimensions.width > 0 && (
                 <Image
                     style={[
-                        isHeader ? { width: imageDimensions.width, height: imageDimensions.height } : { width: imageDimensions.width, height: imageDimensions.height },
+                        { width: imageDimensions.width, height: imageDimensions.height },
                         imageStyle
                     ]}
                     source={{ uri }}
@@ -43,7 +44,6 @@ const styles = StyleSheet.create({
     header: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f0f0f0',
         width: '100%',
     },
     headerFullWidth: {

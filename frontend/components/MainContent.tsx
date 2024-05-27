@@ -3,25 +3,27 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Preferences from 'app/(tabs)/preferences';
 import Scanner from 'app/(tabs)/scanner';
 import { FontAwesome } from '@expo/vector-icons';
-import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '@styles';
+import { View, Text, StyleSheet, useColorScheme } from 'react-native';
+import { Colors } from '@constants';
 
 const Tab = createBottomTabNavigator();
 
-const CustomTabBarLabel = ({ title }: { title: string }) => (
+const CustomTabBarLabel = ({ title, color }: { title: string, color: string }) => (
     <View style={styles.tabBarLabelContainer}>
-        <Text style={styles.tabBarLabel}>{title}</Text>
+        <Text style={[styles.tabBarLabel, { color }]}>{title}</Text>
     </View>
 );
 
 const MainContent: React.FC = () => {
+    const colorScheme = Colors[useColorScheme() ?? 'light'];
+
     return (
         <Tab.Navigator
             screenOptions={{
-                tabBarStyle: styles.tabBar,
-                tabBarLabelStyle: styles.tabBarLabelStyle,
-                tabBarActiveTintColor: 'black', // Set the active tab color to black
-                tabBarInactiveTintColor: 'gray', // Optionally set the inactive tab color
+                tabBarStyle: [styles.tabBar, { backgroundColor: colorScheme.background, borderTopColor: colorScheme.tint }],
+                tabBarLabelStyle: [styles.tabBarLabelStyle, { color: colorScheme.text }],
+                tabBarActiveTintColor: colorScheme.tint,
+                tabBarInactiveTintColor: 'gray',
             }}
         >
             <Tab.Screen
@@ -31,8 +33,8 @@ const MainContent: React.FC = () => {
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                         <FontAwesome name="list-alt" color={color} size={size} />
-                    ), // Add the preference icon here
-                    tabBarLabel: () => <CustomTabBarLabel title="Dieetvoorkeuren" />,
+                    ),
+                    tabBarLabel: ({ color }) => <CustomTabBarLabel title="Dieetvoorkeuren" color={color} />,
                 }}
             />
 
@@ -40,8 +42,8 @@ const MainContent: React.FC = () => {
                 headerShown: false,
                 tabBarIcon: ({ color, size }) => (
                     <FontAwesome name="camera" color={color} size={size} />
-                ), // Add the preference icon here
-                tabBarLabel: () => <CustomTabBarLabel title="Scanner" />,
+                ),
+                tabBarLabel: ({ color }) => <CustomTabBarLabel title="Scanner" color={color} />,
             }} />
         </Tab.Navigator>
     );
@@ -49,9 +51,7 @@ const MainContent: React.FC = () => {
 
 const styles = StyleSheet.create({
     tabBar: {
-        backgroundColor: '#ffffff',
         borderTopWidth: 1,
-        borderTopColor: '#dddddd',
         height: 60,
         paddingBottom: 10,
         paddingTop: 10,
@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
     },
     tabBarLabel: {
         fontSize: 14,
-        color: colors.primary,
     },
     tabBarLabelStyle: {
         fontSize: 14,

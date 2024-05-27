@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, useColorScheme } from 'react-native';
 import { ONBOARDING_STEPS } from '@enums';
 import ButtonComponent from 'components/Button';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedGestureHandler, withSpring, useAnimatedStyle, runOnJS } from 'react-native-reanimated';
 import HeaderComponent from 'components/Header';
+import { Colors } from '@constants';
 
 const { width } = Dimensions.get('window');
 
@@ -14,6 +15,8 @@ interface OnboardingProps {
 }
 
 const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
+  const colorScheme = Colors[useColorScheme() ?? 'light'];
+
   const [step, setStep] = useState<ONBOARDING_STEPS>(initialStep);
   const translateX = useSharedValue(0);
 
@@ -89,33 +92,33 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
     switch (step) {
       case ONBOARDING_STEPS.STEP_1:
         return (
-          <View style={styles.container}>
+          <View style={[styles.container, { backgroundColor: colorScheme.background }]}>
             <HeaderComponent imageStyle={{ height: 100 }} uri='https://i.imgur.com/a3BKEBK.png'></HeaderComponent>
-            <Text style={styles.title}>Vermijd ongewenste ingrediënten</Text>
-            <Text style={styles.description}>
+            <Text style={[styles.title, { color: colorScheme.text }]}>Vermijd ongewenste ingrediënten</Text>
+            <Text style={[styles.description, { color: colorScheme.text }]}>
               Geef aan welke ingrediënten je wilt vermijden en wij speuren ze op in producten. Je voorkeuren zijn altijd aanpasbaar.
             </Text>
           </View>
         );
       case ONBOARDING_STEPS.STEP_2:
         return (
-          <View style={styles.container}>
+          <View style={[styles.container, { backgroundColor: colorScheme.background }]}>
             <HeaderComponent imageStyle={{ height: 100 }} uri='https://i.imgur.com/OHigjQm.png'></HeaderComponent>
-            <Text style={styles.title}>Scan de productlabel voor snelle feedback</Text>
-            <Text style={styles.description}>
+            <Text style={[styles.title, { color: colorScheme.text }]}>Scan de productlabel voor snelle feedback</Text>
+            <Text style={[styles.description, { color: colorScheme.text }]}>
               Richt je camera op de productlabel om snel en eenvoudig te zien of het product bij je dieetvoorkeur past.
             </Text>
           </View>
         );
       case ONBOARDING_STEPS.STEP_3:
         return (
-          <View style={styles.container}>
+          <View style={[styles.container, { backgroundColor: colorScheme.background }]}>
             <HeaderComponent
               imageStyle={{ height: 100 }}
               uri="https://i.imgur.com/EzxrEPg.png"
             />
-            <Text style={styles.title}>Laten we beginnen</Text>
-            <Text style={styles.description}>
+            <Text style={[styles.title, { color: colorScheme.text }]}>Laten we beginnen</Text>
+            <Text style={[styles.description, { color: colorScheme.text }]}>
               Dit is Ingredient Inspector. Makkelijk hè? Druk op de knop zodra je klaar bent om je dieetvoorkeuren in te stellen.
             </Text>
           </View>
@@ -126,7 +129,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, { backgroundColor: colorScheme.background }]}>
       <View style={styles.skipButtonContainer}>
         <ButtonComponent title="Overslaan" onPress={skipOnboarding} styleType="inline" />
       </View>
@@ -136,9 +139,9 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, initialStep }) => {
         </Animated.View>
       </PanGestureHandler>
       <View style={styles.dotsContainer}>
-        <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_1 && styles.activeDot]} />
-        <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_2 && styles.activeDot]} />
-        <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_3 && styles.activeDot]} />
+        <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_1 && { backgroundColor: colorScheme.tabIconSelected }]} />
+        <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_2 && { backgroundColor: colorScheme.tabIconSelected }]} />
+        <View style={[styles.dot, step === ONBOARDING_STEPS.STEP_3 && { backgroundColor: colorScheme.tabIconSelected }]} />
       </View>
       <View style={styles.continueButtonContainer}>
         <ButtonComponent title={step === ONBOARDING_STEPS.STEP_3 ? 'Beginnen' : 'Verder'} onPress={nextStep} styleType="primary" />
@@ -189,9 +192,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#ccc',
     marginHorizontal: 5,
-  },
-  activeDot: {
-    backgroundColor: '#000',
   },
   continueButtonContainer: {
     width: '90%',

@@ -1,5 +1,5 @@
 // Common.
-const tintColorLight = '#2f95dc';
+const tintColorLight = '#000';
 const tintColorDark = '#fff';
 
 export default {
