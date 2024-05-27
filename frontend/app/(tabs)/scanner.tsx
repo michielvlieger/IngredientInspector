@@ -25,17 +25,17 @@ export default function TabTwoScreen() {
     })();
   }, []);
 
-  const getIngredients = (ingredients: OpenfoodfactsIngredientInterface[]) => {
-    let ingredientArr: IngredientsDTO[] = []
-    ingredients.forEach((ingredient: OpenfoodfactsIngredientInterface) => {
+  const getIngredients = async (ingredients: OpenfoodfactsIngredientInterface[]) => {
+    let ingredientArr: IngredientsDTO[] = [];
+    for await (const ingredient of ingredients) {
       if ('ingredients' in ingredient && ingredient.ingredients) {
-        ingredientArr = ingredientArr.concat(getIngredients(ingredient.ingredients))
+        ingredientArr = ingredientArr.concat(await getIngredients(ingredient.ingredients))
       } else {
-        const dbingredient = getIngredientByKey(ingredient.id);
-        console.log(dbingredient);
-        ingredientArr.push({ key: ingredient.id, name: ingredient.text, checked: false });
+        const dbingredient = await getIngredientByKey(ingredient.id);
+        console.log(dbingredient.name + ' ' + dbingredient.checked)
+        ingredientArr.push({ key: ingredient.id, name: ingredient.text, checked: dbingredient.checked });
       };
-    });
+    };
     return ingredientArr
   }
 
@@ -116,7 +116,7 @@ export default function TabTwoScreen() {
       productArr[productIndex].brand = response.data.product.brands;
       productArr[productIndex].image = response.data.product.image_front_small_url;
       if ('ingredients' in response.data.product) {
-        productArr[productIndex].ingredients = getIngredients(response.data.product.ingredients);
+        productArr[productIndex].ingredients = await getIngredients(response.data.product.ingredients);
       }
 
     });

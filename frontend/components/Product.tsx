@@ -13,6 +13,7 @@ export function Product({ product, colorScheme }: Props) {
     let isOkayForUser = true;
     product.ingredients.forEach(ingredient => {
         if (ingredient.checked) isOkayForUser = false
+        return;
     })
     return (
         <View style={{
