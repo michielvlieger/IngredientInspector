@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, View, TextInput, FlatList, ListRenderItemInfo, Animated, Dimensions, ListRenderItem, useColorScheme } from 'react-native';
+import { StyleSheet, Text, View, TextInput, FlatList, ListRenderItem, Animated, useColorScheme } from 'react-native';
 import CheckboxComponent from 'components/Checkbox';
 import { allCategoriesWithIngredientsWithCheckboxes, enableOrDisableAllCategoryIngredients, updateCheckboxStatusOfIngredient } from '@hooks';
 import HeaderComponent from 'components/Header';
@@ -57,15 +57,16 @@ const Preferences: React.FC = () => {
     updateCheckboxStatusOfIngredient(newValue).subscribe({
       next: () => {
         setItems((prevItems) =>
-          prevItems?.map(item =>
-          ({
-            ...item,
-            value: item.value.map(v =>
-              v.id === newValue.id ? { ...v, checked: newValue.checked } : v
-            ),
-            checked: item.value.some(v => v.checked || (v.id === newValue.id && newValue.checked))
-          })
-          ) || null
+          prevItems?.map(item => {
+            if (item.value.some(v => v.id === newValue.id)) {
+              const updatedValues = item.value.map(v =>
+                v.id === newValue.id ? { ...v, checked: newValue.checked } : v
+              );
+              const anyChecked = updatedValues.some(v => v.checked);
+              return { ...item, value: updatedValues, checked: anyChecked };
+            }
+            return item;
+          }) || null
         );
       },
       error: (error) => console.error(`Error updating ingredient ${newValue.id}`, error)
