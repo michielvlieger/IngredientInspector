@@ -10,11 +10,6 @@ type Props = {
 };
 
 export function Product({ product, colorScheme }: Props) {
-    let isOkayForUser = true;
-    product.ingredients.forEach(ingredient => {
-        if (ingredient.checked) isOkayForUser = false
-        return;
-    })
     return (
         <View style={{
             flexDirection: 'row',
@@ -41,7 +36,7 @@ export function Product({ product, colorScheme }: Props) {
                     flexDirection: 'row',
                     alignItems: "center"
                 }}>
-                    {isOkayForUser ? <AntDesign name="checkcircle" size={24} color="green" style={{ marginRight: 8 }} /> : <AntDesign name="closecircle" size={24} color="red" style={{ marginRight: 8 }} />}
+                    {product.hasCheckedIngredient ? <AntDesign name="closecircle" size={24} color="red" style={{ marginRight: 8 }} /> : <AntDesign name="checkcircle" size={24} color="green" style={{ marginRight: 8 }} />}
                     <Text style={{
                         color: colorScheme?.text,
                         fontSize: 22,

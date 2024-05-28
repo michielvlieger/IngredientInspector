@@ -1,7 +1,13 @@
 import { BoundingBoxInterface, TagInterface, } from '@interfaces';
 
 export interface AIResultInterface {
-    id: string;
-    boundingBox: BoundingBoxInterface;
-    tags: TagInterface[];
+    products: {
+        id: string;
+        boundingBox: BoundingBoxInterface;
+        tags: TagInterface[];
+    }[]
+    imageMetadata: {
+        height: number;
+        width: number;
+    }
 }
