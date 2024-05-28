@@ -7,4 +7,5 @@ export interface ProductInterface {
     brand: string;
     boundingBoxes: BoundingBoxInterface[];
     ingredients: IngredientsDTO[];
+    hasCheckedIngredient: boolean | null;
 }
