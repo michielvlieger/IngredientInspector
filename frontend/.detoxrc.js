@@ -20,8 +20,8 @@ module.exports = {
     'ios.release': {
       type: 'ios.app',
       build:
-        'xcodebuild -workspace ios/eastestsexample.xcworkspace -scheme eastestsexample -configuration Release -sdk iphonesimulator -arch x86_64 -derivedDataPath ios/build',
-      binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/eastestsexample.app',
+        'xcodebuild -workspace ios/frontend.xcworkspace -scheme frontend -configuration Release -sdk iphonesimulator -arch x86_64 -derivedDataPath ios/build',
+      binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/frontend.app',
     },
     'android.release': {
       type: 'android.apk',
@@ -34,7 +34,7 @@ module.exports = {
     simulator: {
       type: 'ios.simulator',
       device: {
-        type: 'iPhone 14',
+        type: 'iPhone SE (3rd generation)',
       },
     },
     emulator: {
