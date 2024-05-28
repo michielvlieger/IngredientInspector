@@ -1,5 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, useColorScheme } from 'react-native';
+import { Colors } from '@constants';
 
 interface ButtonProps {
   title: string;
@@ -8,7 +9,8 @@ interface ButtonProps {
 }
 
 const ButtonComponent: React.FC<ButtonProps> = ({ title, onPress, styleType }) => {
-  const styles = styleType === 'primary' ? primaryStyles : inlineStyles;
+  const colorScheme = Colors[useColorScheme() ?? 'light'];
+  const styles = styleType === 'primary' ? createPrimaryStyles(colorScheme) : createInlineStyles(colorScheme);
 
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
@@ -17,23 +19,23 @@ const ButtonComponent: React.FC<ButtonProps> = ({ title, onPress, styleType }) =
   );
 };
 
-const primaryStyles = StyleSheet.create({
+const createPrimaryStyles = (colorScheme: any) => StyleSheet.create({
   button: {
-    backgroundColor: '#000',
+    backgroundColor: colorScheme.text,  // Use the text color for the button background
     paddingVertical: 16,
     paddingHorizontal: 24,
     borderRadius: 5,
     width: '100%',
   },
   buttonText: {
-    color: '#fff',
+    color: colorScheme.background,  // Use the background color for the text
     fontSize: 16,
     textAlign: 'center',
     fontWeight: 'bold',
   },
 });
 
-const inlineStyles = StyleSheet.create({
+const createInlineStyles = (colorScheme: any) => StyleSheet.create({
   button: {
     backgroundColor: 'transparent',
     paddingVertical: 6,
@@ -42,12 +44,11 @@ const inlineStyles = StyleSheet.create({
     marginEnd: -6,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.6)',
+    borderColor: colorScheme.text,
     alignSelf: 'flex-end',
   },
-
   buttonText: {
-    color: 'rgba(0, 0, 0, 0.6)',
+    color: colorScheme.text,
     fontSize: 12,
     textAlign: 'center',
   },

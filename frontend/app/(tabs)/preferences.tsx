@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, View, TextInput, FlatList, ListRenderItemInfo, Animated, Dimensions, ListRenderItem } from 'react-native';
+import { StyleSheet, Text, View, TextInput, FlatList, ListRenderItem, Animated, useColorScheme } from 'react-native';
 import CheckboxComponent from 'components/Checkbox';
 import { allCategoriesWithIngredientsWithCheckboxes, enableOrDisableAllCategoryIngredients, updateCheckboxStatusOfIngredient } from '@hooks';
 import HeaderComponent from 'components/Header';
 import { CheckboxInterface } from '@interfaces';
+import { Colors } from '@constants';
 
 const HEADER_MAX_HEIGHT = 200;
 const HEADER_MIN_HEIGHT = 50;
@@ -18,6 +19,7 @@ interface CategoryWithIngredients {
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<CategoryWithIngredients>);
 
 const Preferences: React.FC = () => {
+  const colorScheme = Colors[useColorScheme() ?? 'light'];
   const [items, setItems] = useState<CategoryWithIngredients[] | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -55,15 +57,16 @@ const Preferences: React.FC = () => {
     updateCheckboxStatusOfIngredient(newValue).subscribe({
       next: () => {
         setItems((prevItems) =>
-          prevItems?.map(item =>
-          ({
-            ...item,
-            value: item.value.map(v =>
-              v.id === newValue.id ? { ...v, checked: newValue.checked } : v
-            ),
-            checked: item.value.some(v => v.checked || (v.id === newValue.id && newValue.checked))
-          })
-          ) || null
+          prevItems?.map(item => {
+            if (item.value.some(v => v.id === newValue.id)) {
+              const updatedValues = item.value.map(v =>
+                v.id === newValue.id ? { ...v, checked: newValue.checked } : v
+              );
+              const anyChecked = updatedValues.some(v => v.checked);
+              return { ...item, value: updatedValues, checked: anyChecked };
+            }
+            return item;
+          }) || null
         );
       },
       error: (error) => console.error(`Error updating ingredient ${newValue.id}`, error)
@@ -77,8 +80,8 @@ const Preferences: React.FC = () => {
 
   if (!items) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.centerText}>
+      <View style={[styles.loadingContainer, { backgroundColor: colorScheme.background }]}>
+        <Text style={[styles.centerText, { color: colorScheme.text }]}>
           Aan het laden...
         </Text>
       </View>
@@ -86,8 +89,8 @@ const Preferences: React.FC = () => {
   }
 
   const renderCategory: ListRenderItem<CategoryWithIngredients> = ({ item }) => (
-    <View style={[styles.categoryContainer, styles.backgroundWhite]}>
-      <View style={[styles.row, styles.backgroundWhite]}>
+    <View style={[styles.categoryContainer, { backgroundColor: colorScheme.background }]}>
+      <View style={[styles.row, { backgroundColor: colorScheme.background }]}>
         <CheckboxComponent
           key={item.id}
           id={item.id}
@@ -95,9 +98,9 @@ const Preferences: React.FC = () => {
           checked={item.checked}
           onValueChange={handleCategoryChange}
         />
-        <Text style={styles.categoryHeader}>{item.label}</Text>
+        <Text style={[styles.categoryHeader, { color: colorScheme.text }]}>{item.label}</Text>
       </View>
-      <View style={[styles.indented, styles.backgroundWhite]}>
+      <View style={[styles.indented, { backgroundColor: colorScheme.background }]}>
         {item.value.map((ingredient) => (
           <CheckboxComponent
             key={ingredient.id}
@@ -137,7 +140,7 @@ const Preferences: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colorScheme.background }]}>
       <Animated.View style={[styles.header, { transform: [{ translateY: headerTranslate }] }]}>
         <HeaderComponent
           uri="https://i.imgur.com/yqWH29P.jpeg"
@@ -160,10 +163,11 @@ const Preferences: React.FC = () => {
         onScrollEndDrag={handleScrollEnd}
         onMomentumScrollEnd={handleScrollEnd}
       />
-      <Animated.View style={[styles.minimizedSearchBarContainer, { opacity: searchBarOpacity }]}>
+      <Animated.View style={[styles.minimizedSearchBarContainer, { opacity: searchBarOpacity, backgroundColor: colorScheme.background }]}>
         <TextInput
-          style={styles.minimizedSearchBar}
+          style={[styles.minimizedSearchBar, { borderColor: colorScheme.text, color: colorScheme.text }]}
           placeholder="Zoek..."
+          placeholderTextColor={colorScheme.text}
           value={searchQuery}
           onFocus={() => setIsTyping(true)}
           onBlur={() => {
@@ -213,7 +217,6 @@ const styles = StyleSheet.create({
     bottom: 20,
     right: 20,
     width: 150,
-    backgroundColor: '#fff',
     borderRadius: 8,
     paddingHorizontal: 8,
     paddingVertical: 6,
@@ -221,7 +224,6 @@ const styles = StyleSheet.create({
   },
   minimizedSearchBar: {
     height: 40,
-    borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 8,
@@ -246,10 +248,6 @@ const styles = StyleSheet.create({
   indented: {
     marginLeft: 36,
   },
-  backgroundWhite: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-  }
 });
 
 export default Preferences;
