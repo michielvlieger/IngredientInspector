@@ -33,7 +33,7 @@ export default function TabTwoScreen() {
         ingredientArr = ingredientArr.concat(returnedIngredients.ingredientArr)
       } else {
         const dbingredient = await getIngredientByKey(ingredient.id);
-        if (dbingredient.checked) {
+        if (dbingredient && dbingredient.checked) {
           foundCheckedIngredient = true;
         }
         ingredientArr.push({ key: ingredient.id, name: ingredient.text, checked: dbingredient.checked });
@@ -113,8 +113,8 @@ export default function TabTwoScreen() {
       };
     });
 
-    await Promise.all(promises).then(results => {
-      results.forEach(async response => {
+    await Promise.all(promises).then(async results => {
+      for await (const response of results) {
         const productIndex = productArr.findIndex((product) => product.id === response.data.code);
         productArr[productIndex].name = response.data.product.product_name;
         productArr[productIndex].brand = response.data.product.brands;
@@ -124,7 +124,7 @@ export default function TabTwoScreen() {
           productArr[productIndex].ingredients = returnedIngredients.ingredientArr;
           productArr[productIndex].hasCheckedIngredient = returnedIngredients.foundCheckedIngredient;
         }
-      });
+      }
     }).catch(error => console.error(error));
 
     return { products: productArr, imageMetadata: aiResults.imageMetadata };

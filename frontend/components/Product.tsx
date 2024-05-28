@@ -10,6 +10,20 @@ type Props = {
 };
 
 export function Product({ product, colorScheme }: Props) {
+    let hasCheckedIngredientIndicator;
+    switch (product.hasCheckedIngredient) {
+        case null:
+            hasCheckedIngredientIndicator = <AntDesign name="minuscircle" size={24} color="yellow" style={{ marginRight: 8 }} />;
+            break;
+        case true:
+            hasCheckedIngredientIndicator = <AntDesign name="closecircle" size={24} color="red" style={{ marginRight: 8 }} />;
+            break;
+        case false:
+            hasCheckedIngredientIndicator = <AntDesign name="checkcircle" size={24} color="green" style={{ marginRight: 8 }} />;
+            break;
+
+    }
+
     return (
         <View style={{
             flexDirection: 'row',
@@ -36,7 +50,7 @@ export function Product({ product, colorScheme }: Props) {
                     flexDirection: 'row',
                     alignItems: "center"
                 }}>
-                    {product.hasCheckedIngredient ? <AntDesign name="closecircle" size={24} color="red" style={{ marginRight: 8 }} /> : <AntDesign name="checkcircle" size={24} color="green" style={{ marginRight: 8 }} />}
+                    {hasCheckedIngredientIndicator}
                     <Text style={{
                         color: colorScheme?.text,
                         fontSize: 22,

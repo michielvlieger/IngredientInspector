@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { ProductIndicator } from './ProductIndicator';
+import { useEffect } from 'react';
 
 type Props = {
     scannerResult: {
@@ -49,6 +50,7 @@ export function ScannerResult({ scannerResult, colorScheme, handleResetScanner, 
     scannerResult?.products.forEach(product => {
         ProductIndicators = ProductIndicators.concat(product.boundingBoxes.map(boundingBox => <View key={key++}><ProductIndicator difference={difference} boundingBox={boundingBox} product={product} /></View>));
     });
+
     return (
         <View>
             <ScrollView>
