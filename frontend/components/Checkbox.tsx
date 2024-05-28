@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, useColorScheme } from 'react-native';
 import Checkbox from 'expo-checkbox';
-import { colors } from '@styles';
+import { Colors } from '@constants';
 import { CheckboxInterface } from '@interfaces';
 
 const CheckboxComponent: React.FC<CheckboxInterface> = ({ id, label, checked, onValueChange }) => {
+  const colorScheme = Colors[useColorScheme() ?? 'light'];
   const [isChecked, setChecked] = useState(checked);
 
   useEffect(() => {
@@ -29,10 +30,10 @@ const CheckboxComponent: React.FC<CheckboxInterface> = ({ id, label, checked, on
         style={styles.checkbox}
         value={isChecked}
         onValueChange={handleValueChange}
-        color={isChecked ? colors.primary : undefined}
+        color={isChecked ? colorScheme.tint : undefined}
         accessibilityLabel="Checkbox Label"
       />
-      <Text>{label}</Text>
+      <Text style={{ color: colorScheme.text }}>{label}</Text>
     </View>
   );
 };
