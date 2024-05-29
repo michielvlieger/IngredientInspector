@@ -1,3 +1,4 @@
+import clearDatabase from "../helpers/clear-database.helper";
 import seedCategoriesHasIngredients from "./categories-has-ingredients.seeder";
 import seedCategories from "./categories.seeder";
 import seedIngredients from "./ingredients.seeder";
@@ -38,4 +39,5 @@ export default runAllSeeds;
  * TODO: make migrations table that stores each table name as a string upon seeding success.
  * Used for checking if seeding is necessary or not. That way, below function can stay enabled.
  */
+clearDatabase();
 runAllSeeds();
