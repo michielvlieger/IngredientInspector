@@ -38,4 +38,4 @@ export default runAllSeeds;
  * TODO: make migrations table that stores each table name as a string upon seeding success.
  * Used for checking if seeding is necessary or not. That way, below function can stay enabled.
  */
-// runAllSeeds();
+runAllSeeds();
