@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "IngredientInspector",
-    "slug": "ingredient-inspector",
+    "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/hamburger-image.png",
