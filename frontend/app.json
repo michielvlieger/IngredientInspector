@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "IngredientInspector",
+    "slug": "ingredient-inspector",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/hamburger-image.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -17,13 +17,20 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.frontend"
+      "bundleIdentifier": "com.anonymous.frontend",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to scan pictures for products."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA"
+      ],
+      "package": "com.anonymous.frontend"
     },
     "web": {
       "bundler": "metro",
@@ -33,7 +40,10 @@
     "plugins": [
       "expo-router",
       [
-        "@morrowdigital/watermelondb-expo-plugin"
+        "@morrowdigital/watermelondb-expo-plugin",
+        {
+          "disableJSI": true
+        }
       ],
       [
         "expo-build-properties",
@@ -47,10 +57,31 @@
             }
           }
         }
-      ]
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow IngredientInspector to access your camera"
+        }
+      ],
+      [
+        "@config-plugins/detox",
+        {
+          "subdomains": "*"
+        }
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f358d00a-8142-4d6e-8cc4-10d56b1444c8"
+      }
     }
   }
 }

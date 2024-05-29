@@ -1,23 +1,38 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
     "strict": true,
-    "experimentalDecorators": true, // Enable decorator support.
-    "emitDecoratorMetadata": true, // Emit additional metadata for decorators.
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
-      "@/*": [
-        "./*"
+      "@interfaces": [
+        "app/interfaces/index.interface.ts"
       ],
-      "@interfaces/*": [
-        "app/interfaces/*",
+      "@services": [
+        "app/services/index.service.ts"
       ],
-      "@models/*": [
-        "app/database/models/*",
+      "@hooks": [
+        "app/hooks/index.hooks.ts"
       ],
-      "@schemas/*": [
-        "app/database/schemas/*",
+      "@constants": [
+        "app/constants/index.constants.ts"
       ],
+      "@styles": [
+        "styles/index.ts"
+      ],
+      "@models": [
+        "app/database/models/index.model.ts"
+      ],
+      "@schemas": [
+        "app/database/schemas/index.schemas.ts"
+      ],
+      "@seeds": [
+        "app/database/seeds/index.seeds.ts"
+      ],
+      "@enums": [
+        "app/enums/index.enums.ts"
+      ]
     }
   },
   "include": [
@@ -25,5 +40,6 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+  ],
+  "outDir": "./dist"
 }

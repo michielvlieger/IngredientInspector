@@ -23,6 +23,7 @@ Instructions to run the "Ingredient Inspector" application can be found here:
 - [Running Your React Native Application](https://reactnative.dev/docs/environment-setup?guide=native#running-your-react-native-application)
   - `npm run ios` for iOS devices.
   - `npm run android` for Android devices.
+  - `npm run android usb` for Android devices through usb debugging.
   - `npm run` to execute other npm scripts as defined in `package.json`.
 
 ## Command Shortcuts
@@ -67,3 +68,7 @@ For troubleshooting common issues, including how to kill a port that's in use, r
 
 - Reopen the iOS Simulator without Stopping the Expo Project:
     If you're using the command line, you can simply press i in the terminal where your Expo project is running. This command tells Expo to open the project in the iOS simulator again.
+
+
+## Database File Naming Conventions
+- https://watermelondb.dev/docs/Schema
